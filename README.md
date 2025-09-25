@@ -12,7 +12,7 @@
 1.
 
 ```bash
-git clone https://github.com/kenta-10043/coachtech-flea.git
+git clone https://github.com/kenta-10043/attendance_management.git
 ```
 
 2.
