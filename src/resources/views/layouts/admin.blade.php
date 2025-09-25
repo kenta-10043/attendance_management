@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     @yield('css')
 </head>
 
@@ -16,9 +16,9 @@
         <nav class="header__nav">
             <img class="title" src="{{ asset('storage/images/CoachTech_White 1.png') }}" alt="ロゴ">
             <div class="link__menu">
-                <a class="link__attendance" href="{{ route('attendance.attendance') }}">勤怠</a>
-                <a class="link__index" href="#">勤怠一覧</a>
-                <a class="link__application" href="#">申請</a>
+                <a class="link__attendance" href="#">勤怠一覧</a>
+                <a class="link__index" href="#">スタッフ一覧</a>
+                <a class="link__application" href="#">申請一覧</a>
                 <form action="/logout" method="post">
                     @csrf
                     <button class="button__logout">ログアウト</button>
