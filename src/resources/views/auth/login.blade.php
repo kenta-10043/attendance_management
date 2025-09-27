@@ -3,13 +3,19 @@
 @section('title', 'ログイン')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
 @endsection
 
 @section('content')
+
+    @if (session('error'))
+        <div class="alert-message">{{ session('error') }} </div>
+    @endif
+
     <div class="main__content">
         <form class="login__form" action="/login" method="POST" novalidate>
             @csrf
+
             <h1 class="login-form__title">ログイン</h1>
 
             <div class="login__items">
@@ -40,6 +46,6 @@
                 <p><a class="register__link" href="/register">会員登録はこちら</a></p>
             </div>
         </form>
+    </div>
 
-
-    @endsection
+@endsection

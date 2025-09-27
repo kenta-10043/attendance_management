@@ -19,9 +19,9 @@
                 <a class="link__attendance" href="{{ route('attendance.attendance') }}">勤怠</a>
                 <a class="link__index" href="#">勤怠一覧</a>
                 <a class="link__application" href="#">申請</a>
-                <form action="/logout" method="post">
+                <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button class="button__logout">ログアウト</button>
+                    <button type="submit" class="button__logout">ログアウト</button>
                 </form>
             </div>
         </nav>

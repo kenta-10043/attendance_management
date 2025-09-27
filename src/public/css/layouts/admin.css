@@ -1,0 +1,41 @@
+ .main-header{
+    max-width: 1540px;
+    width: 100%;
+    height: 80px;
+    background-color: black;
+ }
+
+ .header__nav{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+ }
+
+ .title{
+    width: 360px;
+    height: 36px;
+    margin-top: 22px;
+    margin-left: 25px;
+ }
+
+ .link__menu{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 45%;
+ }
+
+ .link__attendance, .link__index, .link__application{
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+ }
+
+ .button__logout{
+    background-color: black;
+    color: white;
+    border: black;
+    font-size: 24px;
+    cursor: pointer;
+ }

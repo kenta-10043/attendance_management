@@ -3,10 +3,15 @@
 @section('title', '会員登録')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
 @endsection
 
 @section('content')
+
+    @if (session('error'))
+        <div class="alert-message">{{ session('error') }} </div>
+    @endif
+
     <div class="main__content">
         <form class="register__form" action="/register" method="POST" novalidate>
             @csrf
@@ -53,13 +58,11 @@
                 </div>
             </div>
 
-
             <div class="navigation-item">
                 <button class="register__button" type="submit">登録する</button>
                 <p><a class="login__link" href="/login">ログインはこちら</a></p>
             </div>
         </form>
-
     </div>
 
 @endsection

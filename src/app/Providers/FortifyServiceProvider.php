@@ -23,6 +23,8 @@ use Laravel\Fortify\Contracts\VerifyEmailViewResponse as VerifyEmailViewResponse
 use App\Http\Responses\VerifyEmailViewResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
 use App\Http\Responses\VerifyEmailResponse;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
+use App\Http\Responses\CustomLogoutResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,7 @@ class FortifyServiceProvider extends ServiceProvider
             VerifyEmailResponseContract::class,
             VerifyEmailResponse::class
         );
+        $this->app->singleton(LogoutResponseContract::class, CustomLogoutResponse::class);
     }
 
     /**

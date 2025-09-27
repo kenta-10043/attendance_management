@@ -15,6 +15,11 @@ class LoginResponse implements LoginResponseContract
             return redirect('/email/verify')
                 ->withErrors(['email' => 'メール認証が完了していません。']);
         }
+
+        if ($user->is_admin) {
+            return redirect()->intended('/admin/attendance/list');
+        }
+
         return redirect('/attendance');
     }
 }
