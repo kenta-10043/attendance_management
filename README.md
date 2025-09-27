@@ -81,11 +81,11 @@ docker-compose exec mysql bash
 ```
 
 ```sql
-mysql -u root -P
+mysql -u root -p
 ```
 
 ```sql
-CREATE DATABASE demo_test
+CREATE DATABASE demo_test;
 ```
 
 - テスト用テーブル作成

@@ -44,6 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
             VerifyEmailResponse::class
         );
         $this->app->singleton(LogoutResponseContract::class, CustomLogoutResponse::class);
+        $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
     }
 
     /**
@@ -67,8 +68,6 @@ class FortifyServiceProvider extends ServiceProvider
             $email = (string) $request->email;
 
             return Limit::perMinute(10)->by($email . $request->ip());
-        });
-
-        app()->bind(FortifyLoginRequest::class, LoginRequest::class);
+        });;
     }
 }
