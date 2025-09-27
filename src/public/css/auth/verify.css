@@ -1,0 +1,43 @@
+.container{
+    max-width: 1540px;
+    width: 100%;
+    height: 1000px;
+}
+
+.mail-message__contents{
+    width: 100%;
+   text-align: center;
+   margin-top: 237px;
+   height: 100%;
+}
+
+.send-message{
+    display: block;
+    width: 100%;
+    height: 58px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.button__verification{
+    width: 257px;
+    height: 69px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #D9D9D9;
+    margin-top: 62px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.verification-send{
+    margin-top: 52px;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 20px;
+    color: #0073CC;
+
+}

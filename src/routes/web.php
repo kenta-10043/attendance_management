@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Routing\Route as RoutingRoute;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['auth.verified'])->group(function () {
+    Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.attendance');
 });
+
+// 管理者ページ
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/attendance/list', [AdminController::class, 'adminAttendanceList'])->name('admin.admin_attendance_list');
+});
+
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->middleware('guest');

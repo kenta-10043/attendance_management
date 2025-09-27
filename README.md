@@ -81,11 +81,11 @@ docker-compose exec mysql bash
 ```
 
 ```sql
-mysql -u root -P
+mysql -u root -p
 ```
 
 ```sql
-CREATE DATABASE demo_test
+CREATE DATABASE demo_test;
 ```
 
 - テスト用テーブル作成
@@ -121,7 +121,7 @@ php artisan test
 
 ## 開発環境
 
-- 勤怠一覧：http://localhost/
+- 勤怠登録：http://localhost/attendance
 - ユーザー登録：http://localhost/register
 - phpMyAdmin：http://localhost:8080/
 
