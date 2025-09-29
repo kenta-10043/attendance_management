@@ -130,11 +130,11 @@ php artisan test
 ### 管理者ユーザー
 
 - email:admmin@example.com
-- password:password00000
+- password:password
 
 ### 一般ユーザー
 
 - email:user@example.com
-- password:password00000
+- password:password
 
 - is_admin によって管理者・一般ユーザーを区別しています

@@ -44,4 +44,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function attendances()
+    {
+        return $this->hasMany('App\Models\Attendance');
+    }
+
+    public function BreakTimes()
+    {
+        return $this->hasMany('App\Models\BreakTime');
+    }
 }
