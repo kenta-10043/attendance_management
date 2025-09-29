@@ -15,7 +15,7 @@ enum AttendanceStatus: int
             self::OFF_DUTY => '出勤外',
             self::WORKING => '勤務中',
             self::BREAK => '休憩中',
-            self::FINISHED => '退勤済み',
+            self::FINISHED => '退勤済',
         };
     }
 }

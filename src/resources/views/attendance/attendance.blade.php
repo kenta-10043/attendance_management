@@ -3,33 +3,72 @@
 @section('title', '出勤登録')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/admin/admin_attendance.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/attendance/attendance.css') }}">
 @endsection
 
 @section('content')
-    <div>
-        <div>{{ $statusLabel }} </div>
-        <div>{{ $now }} </div>
-        <div id="current-time">{{ $today->format('H:i') }}</div>
-    </div>
+    @if (session('message'))
+        <div class="alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
 
-    <div>
-        <form action="{{ route('attendance.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="date">
-            <input type="hidden" name="clock_in">
-            <button type="submit">出勤</button>
-        </form>
-    </div>
+    @if (session('error'))
+        <div class="alert-error">
+            {{ session('error') }}
+        </div>
+    @endif
 
-    <div>
-        <form action="{{ route('attendance.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="clock_out">
-            <button type="submit">退勤</button>
-        </form>
-    </div>
+    <div class="main__content">
+        <span class="attendance__status">{{ $statusLabel }} </span>
+        <div class="date-time">
+            <span class="date-today">{{ $now }} </span>
+            <span class="time-today" id="current-time">{{ $today->format('H:i') }}</span>
+        </div>
 
+        @if (!$attendance || $attendance->isOffDuty())
+            <div>
+                <form action="{{ route('attendance.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="type" value="start">
+                    <button class="button__attendance" type="submit">出勤</button>
+                </form>
+            </div>
+        @endif
+
+        @if ($attendance && $attendance->isWorking())
+            <div class="attendance__content">
+                <div>
+                    <form action="{{ route('attendance.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="type" value="end">
+                        <button class="button__attendance-finish" type="submit">退勤</button>
+                    </form>
+                </div>
+
+                <div class="attendance__content">
+                    <form action="{{ route('attendance.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="type" value="break_start">
+                        <button class="button__break-start" type="submit">休憩入</button>
+                    </form>
+                </div>
+            </div>
+        @endif
+
+        @if ($attendance && $attendance->isOnBreak())
+            <div>
+                <form method="POST" action="{{ route('attendance.store') }}"> @csrf
+                    <input type="hidden" name="type" value="break_end">
+                    <button class="button__break-end" type="submit">休憩戻</button>
+                </form>
+            </div>
+        @endif
+
+        @if ($attendance && $attendance->isFinished())
+            <p class="finished__message">お疲れ様でした。</p>
+        @endif
+    </div>
 
 
     <script>

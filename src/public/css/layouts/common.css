@@ -1,43 +1,47 @@
- .main-header {
-     max-width: 1540px;
-     width: 100%;
-     height: 80px;
-     background-color: black;
- }
+body {
+    background-color: #f0eff2;
+}
 
- .header__nav {
-     height: 100%;
-     display: flex;
-     justify-content: space-between;
- }
+.main-header {
+    max-width: 1540px;
+    width: 100%;
+    height: 80px;
+    background-color: black;
+}
 
- .title {
-     width: 360px;
-     height: 36px;
-     margin-top: 22px;
-     margin-left: 25px;
- }
+.header__nav {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
- .link__menu {
-     display: flex;
-     align-items: center;
-     justify-content: space-around;
-     width: 45%;
- }
+.title {
+    width: 360px;
+    height: 36px;
+    margin-top: 22px;
+    margin-left: 25px;
+}
 
- .link__attendance,
- .link__index,
- .link__application {
-     display: inline-block;
-     color: white;
-     text-decoration: none;
-     font-size: 24px;
- }
+.link__menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 45%;
+}
 
- .button__logout {
-     background-color: black;
-     color: white;
-     border: black;
-     font-size: 24px;
-     cursor: pointer;
- }
+.link__attendance,
+.link__index,
+.link__application {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.button__logout {
+    background-color: black;
+    color: white;
+    border: black;
+    font-size: 24px;
+    cursor: pointer;
+}

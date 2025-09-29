@@ -34,8 +34,28 @@ class Attendance extends Model
     {
         return $this->belongsTo('App\Models\Status')->withDefault(
             [
-                'status' => '勤務外'
+                'status' => 0,
             ]
         );
+    }
+
+    public function isOffDuty(): bool
+    {
+        return $this->status->status === 0;
+    }
+
+    public function isWorking(): bool
+    {
+        return $this->status->status === 1;
+    }
+
+    public function isOnBreak(): bool
+    {
+        return $this->status->status === 2;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->status->status === 3;
     }
 }
