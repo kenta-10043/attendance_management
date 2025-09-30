@@ -12,6 +12,7 @@ use App\Models\BreakTime;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
+use App\Calendars\CalendarView;
 
 class AttendanceController extends Controller
 {
@@ -92,5 +93,38 @@ class AttendanceController extends Controller
         }
 
         return back()->with('error', '不正な操作です');
+    }
+
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $date = $request->input('date') ? Carbon::parse($request->input('date')) : now();
+
+        $calendar = new CalendarView($date);
+        $title = $calendar->getTitle();
+        $currentMonth = $calendar->getDate();
+        $days = $calendar->getMonth();
+        $attendances = Attendance::where('user_id', $user->id)->whereMonth('clock_in', $currentMonth->month)->whereYear('clock_in', $currentMonth->year)->get();
+
+        foreach ($days as $day) {
+            $dailyAttendance = $attendances->first(function ($attendance) use ($day) {
+                return $attendance->clock_in->isSameDay($day);
+            });
+
+            // データがない場合は null
+            $dailyAttendances[] = [
+                'date' => $day,
+                'clock_in' => $dailyAttendance ? $dailyAttendance->clock_in->format('H:i') : null,
+                'clock_out' => $dailyAttendance && $dailyAttendance->clock_out ? $dailyAttendance->clock_out->format('H:i') : null,
+            ];
+        }
+
+        $next = $currentMonth->copy()->addMonth();
+        $prev = $currentMonth->copy()->subMonth();
+
+        return view(
+            'attendance.attendance_list',
+            compact('title', 'currentMonth', 'next', 'prev', 'days', 'dailyAttendances')
+        );
     }
 }

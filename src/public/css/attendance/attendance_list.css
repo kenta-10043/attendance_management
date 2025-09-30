@@ -1,0 +1,25 @@
+.link__previous, .link__this, .link__next{
+    text-decoration: none;
+    color: black;
+}
+
+.calendar__content{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(32, 1fr);
+    width: 900px;
+    height: 31px;
+    border-bottom: 2px solid #E1E1E1;
+    margin-top: 0;
+    gap: 14px;
+    background-color: white;
+}
+
+.attendance__items{
+ background-color: white;
+}
+
+.attendance__date{
+    border-bottom: 2px solid #E1E1E1;
+    background-color: white;
+}

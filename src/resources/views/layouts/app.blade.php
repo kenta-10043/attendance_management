@@ -17,7 +17,7 @@
             <img class="title" src="{{ asset('storage/images/CoachTech_White 1.png') }}" alt="ロゴ">
             <div class="link__menu">
                 <a class="link__attendance" href="{{ route('attendance.attendance') }}">勤怠</a>
-                <a class="link__index" href="#">勤怠一覧</a>
+                <a class="link__index" href="{{ route('attendance.list') }}">勤怠一覧</a>
                 <a class="link__application" href="#">申請</a>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
