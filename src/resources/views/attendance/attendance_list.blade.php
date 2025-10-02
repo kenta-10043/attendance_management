@@ -14,30 +14,39 @@
         <a class="link__next" href="{{ route('attendance.list', ['date' => $next->format('Y-m')]) }}">翌月→</a>
     </div>
 
-    <div class="calender">
-        <div class="calendar__content">
+    <div class="calendar">
+        <table class="calendar__content">
+            <tr>
+                <th class="attendance__items">日付</th>
+                <th class="attendance__items">出勤</th>
+                <th class="attendance__items">退勤</th>
+                <th class="attendance__items">休憩</th>
+                <th class="attendance__items">合計</th>
+                <th class="attendance__items">詳細</th>
+            </tr>
 
-            <span class="attendance__items">日付</span>
-            <span class="attendance__items">出勤</span>
-            <span class="attendance__items">退勤</span>
-            <span class="attendance__items">休憩</span>
-            <span class="attendance__items">合計</span>
-            <span class="attendance__items">詳細</span>
 
+            @foreach ($days as $index => $day)
+                <tr>
+                    <td>{{ $day->isoFormat('MM/DD(ddd)') }} </td>
+                    @php
+                        $attendanceTime = $monthly[$index] ?? null;
+                    @endphp
+                    <td>{{ $attendanceTime['clock_in'] ?? '' }}</td>
+                    <td>{{ $attendanceTime['clock_out'] ?? '' }}</td>
+                    <td>{{ $attendanceTime['work'] ?? '' }}</td>
+                    <td>{{ $attendanceTime['break'] ?? '' }}</td>
 
-
-            @foreach ($dailyAttendances as $attendance)
-                <div class="attendance__date">{{ $attendance['date']->isoFormat('MM/DD (ddd)') }}</div>
-                <div>{{ $attendance['clock_in'] ?? '' }}</div>
-
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <a class="link__detail" href="##">詳細</a>
+                    <td>詳細</td>
+                </tr>
             @endforeach
 
 
-        </div>
+
+
+
+
+        </table>
 
     </div>
 

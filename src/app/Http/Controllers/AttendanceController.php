@@ -13,6 +13,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
 use App\Calendars\CalendarView;
+use App\Services\WorkTimeCalculator;
+
 
 class AttendanceController extends Controller
 {
@@ -104,19 +106,12 @@ class AttendanceController extends Controller
         $title = $calendar->getTitle();
         $currentMonth = $calendar->getDate();
         $days = $calendar->getMonth();
-        $attendances = Attendance::where('user_id', $user->id)->whereMonth('clock_in', $currentMonth->month)->whereYear('clock_in', $currentMonth->year)->get();
 
+        $calculator = new WorkTimeCalculator;
+
+        $monthly = [];
         foreach ($days as $day) {
-            $dailyAttendance = $attendances->first(function ($attendance) use ($day) {
-                return $attendance->clock_in->isSameDay($day);
-            });
-
-            // データがない場合は null
-            $dailyAttendances[] = [
-                'date' => $day,
-                'clock_in' => $dailyAttendance ? $dailyAttendance->clock_in->format('H:i') : null,
-                'clock_out' => $dailyAttendance && $dailyAttendance->clock_out ? $dailyAttendance->clock_out->format('H:i') : null,
-            ];
+            $monthly[] = $calculator->getDailyWorkAndBreak($user->id, $day->format('Y-m-d'));
         }
 
         $next = $currentMonth->copy()->addMonth();
@@ -124,7 +119,7 @@ class AttendanceController extends Controller
 
         return view(
             'attendance.attendance_list',
-            compact('title', 'currentMonth', 'next', 'prev', 'days', 'dailyAttendances')
+            compact('title', 'currentMonth', 'next', 'prev', 'days', 'monthly')
         );
     }
 }
