@@ -31,9 +31,9 @@ class WorkTimeCalculator
         $breakMinutes = 0;
         $breaks = BreakTime::where('attendance_id', $attendance->id)->get();
         foreach ($breaks as $break) {
-            if ($break->break_start && $break->break_end) {
-                $breakMinutes += Carbon::parse($break->break_end)
-                    ->diffInMinutes(Carbon::parse($break->break_start));
+            if ($break->start_break && $break->end_break) {
+                $breakMinutes += Carbon::parse($break->end_break)
+                    ->diffInMinutes(Carbon::parse($break->start_break));
             }
         }
 
@@ -42,8 +42,8 @@ class WorkTimeCalculator
 
         // 配列で返す
         return [
-            'clock_in'  => $attendance->clock_in,                  // 出勤
-            'clock_out' => $attendance->clock_out,                 // 退勤
+            'clock_in'  => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,    // 出勤
+            'clock_out' => $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : null,   // 退勤
             'work'      => $this->formatMinutes($workMinutes),     // 実働時間
             'break'     => $this->formatMinutes($breakMinutes),    // 休憩時間
         ];

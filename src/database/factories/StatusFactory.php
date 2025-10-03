@@ -19,8 +19,8 @@ class StatusFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => 4,
-            'status' => 4,
+            'id' => 3,
+            'status' => 3,
         ];
     }
 }

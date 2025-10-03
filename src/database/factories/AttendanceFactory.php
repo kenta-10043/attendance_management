@@ -35,7 +35,7 @@ class AttendanceFactory extends Factory
             'user_id' => 0,   // ダミー、Seederで必ず上書き
             'clock_in' => $clockIn,
             'clock_out' => $clockOut,
-            'status_id' => 4,
+            'status_id' => 3,
             'approval' => 0,
             'date' => $clockIn->toDateString(),
         ];
