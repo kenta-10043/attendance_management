@@ -20,6 +20,8 @@ use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 Route::middleware(['auth.verified'])->group(function () {
     Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.attendance');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
 });
 
 // 管理者ページ
