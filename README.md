@@ -117,7 +117,7 @@ php artisan test
 
 ## ER 図
 
-![ER](./flea.drawio.png)
+![ER](./)
 
 ## 開発環境
 

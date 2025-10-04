@@ -1,0 +1,126 @@
+.attendance__tittle {
+    width: 900px;
+    border-left: 8px solid;
+    padding-left: 21px;
+    margin-left: 312px;
+    margin-top: 91px;
+    margin-bottom: 47px;
+}
+
+.attendance__content{
+    width: 900px;
+    max-height: 575px;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.attendance__item{
+    display: flex;
+    height: 79px;
+    align-items: center;
+    border-bottom: 2px solid #E1E1E1;
+
+}
+
+.attendance__item-notes{
+    display: flex;
+    height: 99px;
+    align-items: center;
+
+}
+
+.name{
+    margin-left: 258px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.date-year{
+    margin-left: 258px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.date-month{
+    margin-left: 142px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.item__label{
+    margin-left: 64px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #737373;
+    display: block;
+
+
+}
+
+.input__time-in{
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 179px;
+    margin-right: 51px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.input__time-out{
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 43px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.input__time-start{
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 218px;
+    margin-right: 51px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.input__time-end{
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 43px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.attendance__notes{
+    width: 316px;
+    height: 72px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 234px;
+
+}
+
+.button__area{
+max-width: 1171px;
+text-align: right;
+
+}
+
+.button__update{
+    margin-top: 36px;
+    margin-bottom: 77px;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    color: white;
+    background-color: black;
+
+
+}

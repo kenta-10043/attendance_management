@@ -42,6 +42,7 @@ class WorkTimeCalculator
 
         // 配列で返す
         return [
+            'id'        => $attendance->id,
             'clock_in'  => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,    // 出勤
             'clock_out' => $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : null,   // 退勤
             'work'      => $this->formatMinutes($workMinutes),     // 実働時間

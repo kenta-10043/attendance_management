@@ -38,29 +38,54 @@ class DatabaseSeeder extends Seeder
         $allUsers = $users->push($generalUser); // 1人＋5人
 
         foreach ($allUsers as $user) {
-            $attendances = Attendance::factory()->count(20)->create(['user_id' => $user->id]);
+            // 今月の初日と末日
+            $startOfMonth = Carbon::now()->startOfMonth();
+            $endOfMonth   = Carbon::now()->endOfMonth();
 
-            foreach ($attendances as $attendance) {
-                $breakCount = rand(1, 2);
+            for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
+                // ランダムで休み（30%の確率で休みにする）
+                if (rand(1, 100) <= 30) {
+                    continue; // この日は出勤なし
+                }
 
-                for ($i = 0; $i < $breakCount; $i++) {
-                    $startLimit = Carbon::parse($attendance->clock_in)->addHour();
-                    $endLimit = Carbon::parse($attendance->clock_out)->subHour();
+                // 出勤時間（例：8〜9時台）
+                $clockIn = $date->copy()->setTime(rand(8, 9), rand(0, 59));
+                // 退勤時間（8〜9時間後）
+                $clockOut = $clockIn->copy()->addHours(rand(8, 9))->addMinutes(rand(0, 59));
 
-                    $start = $startLimit->copy()->addSeconds(rand(0, max(0, $endLimit->timestamp - $startLimit->timestamp)));
-                    $duration = rand(30, 90);
-                    $end = $start->copy()->addMinutes($duration);
+                // 勤怠1件作成
+                $attendance = Attendance::factory()->create([
+                    'user_id'   => $user->id,
+                    'date'      => $date->toDateString(),
+                    'clock_in'  => $clockIn,
+                    'clock_out' => $clockOut,
+                ]);
 
-                    if ($end > Carbon::parse($attendance->clock_out)) {
-                        $end = Carbon::parse($attendance->clock_out)->subMinutes(5);
+                // --- 休憩作成（最大2回） ---
+                // 昼休憩（必須, 12:00〜13:00）
+                $lunchStart = $date->copy()->setTime(12, 0);
+                $lunchEnd   = $lunchStart->copy()->addHour();
+
+                BreakTime::factory()->create([
+                    'attendance_id' => $attendance->id,
+                    'user_id'       => $user->id,
+                    'start_break'   => $lunchStart,
+                    'end_break'     => $lunchEnd,
+                ]);
+
+                // 午後の小休憩（50%の確率で追加）
+                if (rand(0, 1)) {
+                    $smallBreakStart = $lunchEnd->copy()->addHours(rand(2, 3));
+                    $smallBreakEnd   = $smallBreakStart->copy()->addMinutes(rand(15, 20));
+
+                    if ($smallBreakEnd->lt($clockOut->copy()->subHours(1))) {
+                        BreakTime::factory()->create([
+                            'attendance_id' => $attendance->id,
+                            'user_id'       => $user->id,
+                            'start_break'   => $smallBreakStart,
+                            'end_break'     => $smallBreakEnd,
+                        ]);
                     }
-
-                    BreakTime::factory()->create([
-                        'attendance_id' => $attendance->id,
-                        'user_id' => $user->id,
-                        'start_break' => $start,
-                        'end_break' => $end,
-                    ]);
                 }
             }
         }

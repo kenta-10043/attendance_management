@@ -122,4 +122,22 @@ class AttendanceController extends Controller
             compact('title', 'currentMonth', 'next', 'prev', 'days', 'monthly')
         );
     }
+
+    public function detail($id)
+    {
+        $attendance = $id ? Attendance::find($id) : null;
+        $userName = $attendance->user->name;
+        $attendanceDate = Carbon::parse($attendance->date);
+        $attendanceClockIn = Carbon::parse($attendance->clock_in);
+        $attendanceClockOut = Carbon::parse($attendance->clock_out);
+        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(function ($time) {
+            return $time ? Carbon::parse($time) : null;
+        });
+
+        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(function ($time) {
+            return $time ? Carbon::parse($time) : null;
+        });
+
+        return view('attendance.attendance_detail', compact('attendance', 'userName', 'attendanceDate', 'attendanceClockIn', 'attendanceClockOut', 'attendanceStartBreaks', 'attendanceEndBreaks'));
+    }
 }
