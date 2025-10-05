@@ -23,7 +23,7 @@ Route::middleware(['auth.verified'])->group(function () {
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
-    Route::POST('/attendance/detail/{id}', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::POST('/attendance/detail/{id}', [AttendanceController::class, 'updateOrCreate'])->name('attendance.updateOrCreate');
 });
 
 // 管理者ページ

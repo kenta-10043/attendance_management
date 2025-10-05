@@ -12,7 +12,9 @@ use App\Models\BreakTime;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
+use App\Enums\ApprovalStatus;
 use App\Calendars\CalendarView;
+use App\Http\Requests\AttendanceRequest;
 use App\Services\WorkTimeCalculator;
 
 
@@ -139,5 +141,38 @@ class AttendanceController extends Controller
         });
 
         return view('attendance.attendance_detail', compact('attendance', 'userName', 'attendanceDate', 'attendanceClockIn', 'attendanceClockOut', 'attendanceStartBreaks', 'attendanceEndBreaks'));
+    }
+
+    public function updateOrCreate(AttendanceRequest $request, $id)
+    {
+        $validated = $request->validate();
+        $attendance = Attendance::updateOrCreate(
+            [$id],
+            [
+                'user_id' => auth()->id(),
+                'date' => now()->toDateString(),
+                'clock_in' => $validated['clock_in'],
+                'clock_out' => $validated['clock_out'],
+                'notes' => $validated['notes'],
+                'approve' => $request->approve(),
+            ]
+        );
+
+        $attendance->breakTimes()->delete();
+        if (!empty($validated['start_break'])) {
+            foreach ($validated['start_break'] as $i => $start) {
+                $end = $validated['end_break'][$i] ?? null;
+
+                if ($start && $end) {
+                    $attendance->breakTimes()->create([
+                        'user_id' => auth()->id(),
+                        'start_break' => $start,
+                        'end_break' => $end,
+                    ]);
+                }
+            }
+        }
+        return redirect()->route('attendance.detail', $attendance->id)
+            ->with('success', '勤怠情報を保存しました。');
     }
 }

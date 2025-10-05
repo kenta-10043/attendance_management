@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\user;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Enums\ApprovalStatus;
 
 
 class Attendance extends Model
@@ -65,5 +66,10 @@ class Attendance extends Model
     public function isFinished(): bool
     {
         return $this->status->status === 3;
+    }
+
+    public function getLabelAttribute(): string
+    {
+        return ApprovalStatus::from($this->approve)->label();
     }
 }

@@ -7,9 +7,12 @@
     margin-bottom: 47px;
 }
 
+.main__content{
+    max-height: 900px;
+}
 .attendance__content{
     width: 900px;
-    max-height: 575px;
+    height: 100%;
     background-color: white;
     border-radius: 10px;
     margin: 0 auto;
@@ -121,6 +124,11 @@ text-align: right;
     border-radius: 5px;
     color: white;
     background-color: black;
+}
 
-
+.form__error {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+    margin-left: 240px;
 }
