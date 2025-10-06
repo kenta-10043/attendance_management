@@ -33,6 +33,7 @@
                     <td class="attendance__item__data">{{ $day->isoFormat('MM/DD(ddd)') }} </td>
                     @php
                         $attendanceTime = $monthly[$index] ?? null;
+                        $attendanceId = $attendanceTime['id'] ?? 0;
                     @endphp
                     <td class="attendance__item__data">{{ $attendanceTime['clock_in'] ?? '' }}</td>
                     <td class="attendance__item__data">{{ $attendanceTime['clock_out'] ?? '' }}</td>
@@ -40,7 +41,8 @@
                     <td class="attendance__item__data">{{ $attendanceTime['work'] ?? '' }}</td>
 
                     <td class="attendance__item__data">
-                        <form action="##" method="GET"><button class="button__detail" type="submit">詳細</button>
+                        <form action="{{ route('attendance.detail', ['id' => $attendanceId]) }}" method="GET">
+                            <button class="button__detail" type="submit">詳細</button>
                         </form>
                     </td>
                 </tr>

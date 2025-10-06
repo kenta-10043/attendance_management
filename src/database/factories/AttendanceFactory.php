@@ -36,7 +36,6 @@ class AttendanceFactory extends Factory
             'clock_in' => $clockIn,
             'clock_out' => $clockOut,
             'status_id' => 3,
-            'approval' => 0,
             'date' => $clockIn->toDateString(),
         ];
     }
