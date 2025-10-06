@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Attendance;
 use App\Models\User;
+use App\Models\Application;
 
 class BreakTime extends Model
 {
@@ -14,6 +15,7 @@ class BreakTime extends Model
     protected $fillable = [
         'user_id',
         'attendance_id',
+        'application_id',
         'start_break',
         'end_break',
     ];
@@ -26,5 +28,10 @@ class BreakTime extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class);
     }
 }

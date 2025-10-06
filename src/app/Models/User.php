@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Attendance;
 use App\Models\BreakTime;
+use App\Models\Application;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -50,6 +51,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
     }
 
     public function breakTimes()

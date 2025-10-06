@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
@@ -23,7 +24,7 @@ Route::middleware(['auth.verified'])->group(function () {
     Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
     Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
-    Route::POST('/attendance/detail/{id}', [AttendanceController::class, 'updateOrCreate'])->name('attendance.updateOrCreate');
+    Route::POST('/attendance/detail/{id}', [ApplicationController::class, 'storeApplication'])->name('attendance.storeApplication');
 });
 
 // 管理者ページ

@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('break_times', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('start_break')->nullable();
-            $table->dateTime('end_break')->nullable();
+            $table->dateTime('new_clock_in')->nullable();
+            $table->dateTime('new_clock_out')->nullable();
+            $table->dateTime('new_start_break')->nullable();
+            $table->dateTime('new_end_break')->nullable();
+            $table->string('notes');
+            $table->tinyInteger('approval')->default('0');
+            $table->dateTime('applied_at');
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('break_times');
+        Schema::dropIfExists('applications');
     }
 };

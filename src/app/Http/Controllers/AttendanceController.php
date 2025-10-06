@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
+use App\Models\Application;
 use App\Models\Status;
 use App\Models\BreakTime;
 use App\Models\User;
@@ -15,6 +16,7 @@ use App\Enums\AttendanceStatus;
 use App\Enums\ApprovalStatus;
 use App\Calendars\CalendarView;
 use App\Http\Requests\AttendanceRequest;
+
 use App\Services\WorkTimeCalculator;
 
 
@@ -127,52 +129,83 @@ class AttendanceController extends Controller
 
     public function detail($id)
     {
-        $attendance = $id ? Attendance::find($id) : null;
+        $attendance = Attendance::findOrFail($id);
         $userName = $attendance->user->name;
         $attendanceDate = Carbon::parse($attendance->date);
+
+        // 勤怠の出退勤と休憩
         $attendanceClockIn = Carbon::parse($attendance->clock_in);
         $attendanceClockOut = Carbon::parse($attendance->clock_out);
-        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(function ($time) {
-            return $time ? Carbon::parse($time) : null;
-        });
+        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
 
-        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(function ($time) {
-            return $time ? Carbon::parse($time) : null;
-        });
+        // 最新の申請（存在しなければ null）
+        $application = $attendance->application()->latest()->first();
 
-        return view('attendance.attendance_detail', compact('attendance', 'userName', 'attendanceDate', 'attendanceClockIn', 'attendanceClockOut', 'attendanceStartBreaks', 'attendanceEndBreaks'));
-    }
+        if ($application) {
+            // 申請の出退勤
+            $applicationClockIn  = Carbon::parse($application->new_clock_in);
+            $applicationClockOut = Carbon::parse($application->new_clock_out);
 
-    public function updateOrCreate(AttendanceRequest $request, $id)
-    {
-        $validated = $request->validate();
-        $attendance = Attendance::updateOrCreate(
-            [$id],
-            [
-                'user_id' => auth()->id(),
-                'date' => now()->toDateString(),
-                'clock_in' => $validated['clock_in'],
-                'clock_out' => $validated['clock_out'],
-                'notes' => $validated['notes'],
-                'approve' => $request->approve(),
-            ]
-        );
-
-        $attendance->breakTimes()->delete();
-        if (!empty($validated['start_break'])) {
-            foreach ($validated['start_break'] as $i => $start) {
-                $end = $validated['end_break'][$i] ?? null;
-
-                if ($start && $end) {
-                    $attendance->breakTimes()->create([
-                        'user_id' => auth()->id(),
-                        'start_break' => $start,
-                        'end_break' => $end,
-                    ]);
-                }
-            }
+            // 申請の休憩時間
+            $applicationStartBreaks = $application->breakTimes()->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+            $applicationEndBreaks   = $application->breakTimes()->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+        } else {
+            $applicationClockIn = null;
+            $applicationClockOut = null;
+            $applicationStartBreaks = collect();
+            $applicationEndBreaks = collect();
         }
-        return redirect()->route('attendance.detail', $attendance->id)
-            ->with('success', '勤怠情報を保存しました。');
+
+        return view('attendance.attendance_detail', compact(
+            'attendance',
+            'userName',
+            'attendanceDate',
+            'attendanceClockIn',
+            'attendanceClockOut',
+            'attendanceStartBreaks',
+            'attendanceEndBreaks',
+            'application',
+            'applicationClockIn',
+            'applicationClockOut',
+            'applicationStartBreaks',
+            'applicationEndBreaks'
+        ));
     }
+
+
+
+
+    // public function updateOrCreate(ApplicationRequest $request, $id)
+    // {
+    //     $validated = $request->validate();
+    //     $attendance = Attendance::updateOrCreate(
+    //         [$id],
+    //         [
+    //             'user_id' => auth()->id(),
+    //             'date' => now()->toDateString(),
+    //             'clock_in' => $validated['clock_in'],
+    //             'clock_out' => $validated['clock_out'],
+    //             'notes' => $validated['notes'],
+    //             'approve' => $request->approve(),
+    //         ]
+    //     );
+
+    //     $attendance->breakTimes()->delete();
+    //     if (!empty($validated['start_break'])) {
+    //         foreach ($validated['start_break'] as $i => $start) {
+    //             $end = $validated['end_break'][$i] ?? null;
+
+    //             if ($start && $end) {
+    //                 $attendance->breakTimes()->create([
+    //                     'user_id' => auth()->id(),
+    //                     'start_break' => $start,
+    //                     'end_break' => $end,
+    //                 ]);
+    //             }
+    //         }
+    //     }
+    //     return redirect()->route('attendance.detail', $attendance->id)
+    //         ->with('success', '勤怠情報を保存しました。');
+
 }

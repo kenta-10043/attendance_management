@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\user;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Models\Application;
 use App\Enums\ApprovalStatus;
+
 
 
 class Attendance extends Model
@@ -32,6 +34,11 @@ class Attendance extends Model
     public function breakTimes()
     {
         return $this->hasMany(BreakTime::class);
+    }
+
+    public function application()
+    {
+        return $this->hasOne(Application::class);
     }
 
     public function status()
