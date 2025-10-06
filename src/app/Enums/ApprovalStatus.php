@@ -13,7 +13,7 @@ enum ApprovalStatus: int
     {
         return match ($this) {
             self::NOT_APPLIED => '未申請',
-            self::PENDING => '未承認',
+            self::PENDING => '承認待ち',
             self::APPROVED => '承認済み',
         };
     }
