@@ -1,0 +1,41 @@
+.attendance__tittle {
+    width: 900px;
+    border-left: 8px solid;
+    padding-left: 21px;
+    margin-left: 274px;
+    margin-top: 91px;
+    margin-bottom: 47px;
+}
+
+.calendar__content {
+    width: 900px;
+    height: 500px;
+    margin-bottom: 114px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    color: #737373;
+    text-align: center;
+}
+
+.attendance__item {
+    width: 30px;
+    height: 31px;
+    border-bottom: 3px #E1E1E1 solid;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.attendance__item__data {
+    border-bottom: 2px solid #E1E1E1;
+    height: 33px;
+    padding: 16px 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.button__detail {
+    border: none;
+    background-color: #FFFFFF;
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+}

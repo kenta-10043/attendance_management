@@ -25,7 +25,7 @@ class ApplicationRequest extends FormRequest
         return [
             'new_clock_in' => ['required', 'date_format:H:i', 'before:new_clock_out'],
             'new_clock_out' => ['required', 'date_format:H:i'],
-            'notes' => ['required', 'max:255'],
+            'notes' => ['required', 'string', 'max:255'],
 
             'new_start_break' => ['array'],
             'new_end_break' => ['array'],
@@ -46,6 +46,7 @@ class ApplicationRequest extends FormRequest
             'new_clock_out.date_format' => '00:00形式で入力してください',
 
             'notes.required' => '備考を記入してください',
+            'notes.string' => '文字列で記入してください',
             'notes.max' => '備考は255文字以内で記入してください',
 
             'new_start_break.*.date_format' => '00:00形式で入力してください',

@@ -51,4 +51,25 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('success', '修正申請を登録しました');
     }
+
+    public function applicationList(Request $request)
+    {
+        $user = Auth::user();
+
+        // 表示する月を指定（未指定なら今月）
+        $currentMonth = $request->input('month')
+            ? Carbon::parse($request->input('month'))
+            : Carbon::now();
+
+        // 当月の勤怠データを取得
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereMonth('date', $currentMonth->month)
+            ->whereYear('date', $currentMonth->year)
+            ->whereHas('application')
+            ->with('application')
+            ->get();
+
+
+        return view('attendance.stamp_correction_request_list', compact('attendances'));
+    }
 }

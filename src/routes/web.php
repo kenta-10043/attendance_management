@@ -20,16 +20,17 @@ use App\Http\Controllers\AdminAuthenticatedSessionController;
 */
 
 Route::middleware(['auth.verified'])->group(function () {
-    Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.attendance');
-    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
-    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
+    Route::GET('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.attendance');
+    Route::POST('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::GET('/attendance/list', [AttendanceController::class, 'index'])->name('attendance.list');
+    Route::GET('/attendance/detail/{id}', [AttendanceController::class, 'detail'])->name('attendance.detail');
     Route::POST('/attendance/detail/{id}', [ApplicationController::class, 'storeApplication'])->name('attendance.storeApplication');
+    Route::GET('/stamp_correction_request/list', [ApplicationController::class, 'applicationList'])->name('attendance.applicationList');
 });
 
 // 管理者ページ
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/attendance/list', [AdminController::class, 'adminAttendanceList'])->name('admin.admin_attendance_list');
+    Route::GET('/admin/attendance/list', [AdminController::class, 'adminAttendanceList'])->name('admin.admin_attendance_list');
 });
 
-Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->middleware('guest');
+Route::GET('/admin/login', [AdminController::class, 'showLoginForm'])->middleware('guest');

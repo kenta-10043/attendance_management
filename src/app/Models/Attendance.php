@@ -8,7 +8,7 @@ use App\Models\user;
 use App\Models\BreakTime;
 use App\Models\Status;
 use App\Models\Application;
-use App\Enums\ApprovalStatus;
+
 
 
 
@@ -22,8 +22,7 @@ class Attendance extends Model
         'date',
         'clock_in',
         'clock_out',
-        'notes',
-        'approval',
+
     ];
 
     public function user()
@@ -73,10 +72,5 @@ class Attendance extends Model
     public function isFinished(): bool
     {
         return $this->status->status === 3;
-    }
-
-    public function getLabelAttribute(): string
-    {
-        return ApprovalStatus::from($this->approve)->label();
     }
 }

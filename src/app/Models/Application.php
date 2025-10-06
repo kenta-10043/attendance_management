@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Attendance;
 use App\Models\User;
 use App\Models\BreakTime;
+use App\Enums\ApprovalStatus;
 
 
 
@@ -39,5 +40,10 @@ class Application extends Model
     public function breakTimes()
     {
         return $this->hasMany(BreakTime::class);
+    }
+
+    public function getLabelAttribute(): string
+    {
+        return ApprovalStatus::from($this->approval)->label();
     }
 }
