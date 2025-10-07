@@ -10,9 +10,9 @@
 
     <h2 class="attendance__tittle">申請一覧</h2>
 
-    <div class="index__content__tab">
-        <a class="recommendation__tab" href="{{ route('attendance.applicationList', ['tab' => 'pending']) }}">承認待ち</a>
-        <a class="mylist__tab" href="{{ route('attendance.applicationList', ['tab' => 'approved']) }}">承認済み</a>
+    <div class="application__content__tab">
+        <a class="pending__tab" href="{{ route('attendance.applicationList', ['tab' => 'pending']) }}">承認待ち</a>
+        <a class="approval__tab" href="{{ route('attendance.applicationList', ['tab' => 'approved']) }}">承認済み</a>
     </div>
 
 

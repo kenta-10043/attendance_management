@@ -23,12 +23,38 @@
     text-align: center;
 }
 
+.application__content__tab{
+    width: 900px;
+    border-bottom: black 1px solid;
+    margin-bottom: 50px;
+    margin-left: 300px;
+    padding-bottom: 17px;
+    padding-left: 57px;
+
+
+}
+
+.pending__tab{
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+
+}
+.approval__tab{
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    margin-left: 106px;
+
+}
+
 .attendance__item {
     width: 30px;
     height: 33px;
     border-bottom: 3px #E1E1E1 solid;
     font-size: 16px;
-    font-weight: bold;
 }
 
 .attendance__item__data {
