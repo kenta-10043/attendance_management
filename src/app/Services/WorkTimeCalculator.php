@@ -15,9 +15,8 @@ class WorkTimeCalculator
             ->where('date', $date)
             ->first();
 
-        // データがない or 出勤・退勤のどちらかが未記録 → 計算せず終了
-        if (!$attendance || !$attendance->clock_in || !$attendance->clock_out) {
-            return null;
+        if (!$attendance) {
+            return null; // 完全に勤怠データがない場合のみ null
         }
 
         // 出勤・退勤時刻をCarbonに変換
@@ -43,8 +42,9 @@ class WorkTimeCalculator
         // 配列で返す
         return [
             'id'        => $attendance->id,
+            'user_name' => $attendance->user->name ?? '不明',
             'clock_in'  => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,    // 出勤
-            'clock_out' => $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : null,   // 退勤
+            'clock_out' => $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : null,   // 退勤
             'work'      => $this->formatMinutes($workMinutes),     // 実働時間
             'break'     => $this->formatMinutes($breakMinutes),    // 休憩時間
         ];

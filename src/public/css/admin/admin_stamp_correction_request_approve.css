@@ -1,0 +1,201 @@
+.alert-success {
+    color: white;
+    background-color: black;
+    font-weight: bolder;
+    width: 420px;
+    margin-top: 5px;
+    padding-left: 5px;
+}
+
+.attendance__tittle {
+    width: 900px;
+    border-left: 8px solid;
+    padding-left: 21px;
+    margin-left: 312px;
+    margin-top: 91px;
+    margin-bottom: 47px;
+}
+
+.main__content {
+    max-height: 900px;
+}
+
+.attendance__content {
+    width: 900px;
+    height: 100%;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.attendance__item {
+    display: flex;
+    height: 79px;
+    align-items: center;
+    border-top: 2px solid #E1E1E1;
+
+}
+
+.attendance__item-notes {
+    display: flex;
+    height: 99px;
+    align-items: center;
+    border-top: 2px solid #E1E1E1;
+}
+
+.name {
+    margin-left: 258px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.date-year {
+    margin-left: 258px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.date-month {
+    margin-left: 142px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.item__label {
+    margin-left: 64px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #737373;
+    display: block;
+
+
+}
+
+.input__time-in {
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 179px;
+    margin-right: 51px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+}
+
+.input__time-out {
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 43px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+}
+
+.input__time-start {
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 218px;
+    margin-right: 51px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+}
+
+.input__time-end {
+    width: 103px;
+    height: 28px;
+    display: block;
+    margin-left: 43px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+}
+
+
+.attendance__notes {
+    width: 316px;
+    height: 72px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 234px;
+    border-color: #E1E1E1;
+    border-radius: 4px;
+    overflow: hidden;
+    resize: none;
+
+}
+
+input[readonly] {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.attendance__notes[readonly] {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    line-height: 72px;
+    border: none;
+    resize: none;
+    overflow: hidden;
+}
+
+.button__area {
+    max-width: 1171px;
+    text-align: right;
+
+}
+
+.button__approval {
+    margin-top: 36px;
+    margin-bottom: 77px;
+    font-size: 22px;
+    font-weight: bold;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    color: white;
+    background-color: black;
+}
+
+.button__approved[disabled] {
+    margin-top: 36px;
+    margin-bottom: 77px;
+    font-size: 22px;
+    font-weight: bold;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    color: white;
+    background-color: #696969;
+    border: none;
+}
+
+.form__error {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+    margin-left: 240px;
+}
+
+.approval-status__alert {
+    width: 355px;
+    height: 21px;
+    margin-left: 865px;
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF000080;
+}

@@ -13,6 +13,50 @@
     margin: 0 auto;
 }
 
+.calendar__date {
+    width: 900px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    margin-bottom: 46px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.link__previous,
+.link__this,
+.link__next {
+    text-decoration: none;
+    color: black;
+    display: block;
+    margin-top: 14px;
+}
+
+.link__previous,
+.link__next {
+    font-size: 16px;
+    font-weight: bold;
+    color: #737373;
+
+}
+
+.link__previous {
+    padding-left: 25px;
+}
+
+.link__this {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.calendar__image {
+    margin-right: 11px;
+}
+
+.link__next {
+    padding-right: 25px;
+}
+
 .calendar__content {
     width: 900px;
     max-height: 1506px;

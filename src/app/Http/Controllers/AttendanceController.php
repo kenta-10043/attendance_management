@@ -172,40 +172,4 @@ class AttendanceController extends Controller
             'applicationEndBreaks'
         ));
     }
-
-
-
-
-    // public function updateOrCreate(ApplicationRequest $request, $id)
-    // {
-    //     $validated = $request->validate();
-    //     $attendance = Attendance::updateOrCreate(
-    //         [$id],
-    //         [
-    //             'user_id' => auth()->id(),
-    //             'date' => now()->toDateString(),
-    //             'clock_in' => $validated['clock_in'],
-    //             'clock_out' => $validated['clock_out'],
-    //             'notes' => $validated['notes'],
-    //             'approve' => $request->approve(),
-    //         ]
-    //     );
-
-    //     $attendance->breakTimes()->delete();
-    //     if (!empty($validated['start_break'])) {
-    //         foreach ($validated['start_break'] as $i => $start) {
-    //             $end = $validated['end_break'][$i] ?? null;
-
-    //             if ($start && $end) {
-    //                 $attendance->breakTimes()->create([
-    //                     'user_id' => auth()->id(),
-    //                     'start_break' => $start,
-    //                     'end_break' => $end,
-    //                 ]);
-    //             }
-    //         }
-    //     }
-    //     return redirect()->route('attendance.detail', $attendance->id)
-    //         ->with('success', '勤怠情報を保存しました。');
-
 }
