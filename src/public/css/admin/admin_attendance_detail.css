@@ -2,7 +2,6 @@
     color: white;
     background-color: black;
     font-weight: bolder;
-    width: 420px;
     margin-top: 5px;
     padding-left: 5px;
 }
@@ -157,7 +156,7 @@ input[readonly] {
     text-align: right;
 
 }
-.button__approval {
+.button__update {
     margin-top: 36px;
     margin-bottom: 77px;
     font-size: 22px;

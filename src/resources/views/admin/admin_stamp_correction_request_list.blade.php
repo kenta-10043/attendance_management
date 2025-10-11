@@ -51,7 +51,6 @@
                     </tr>
                 @endforeach
 
-
             @endif
 
             @if (!request()->has('tab') || request()->query('tab') === 'approved')

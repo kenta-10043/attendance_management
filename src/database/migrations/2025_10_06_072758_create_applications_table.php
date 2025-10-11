@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
             $table->dateTime('new_clock_in')->nullable();
             $table->dateTime('new_clock_out')->nullable();
-            $table->dateTime('new_start_break')->nullable();
-            $table->dateTime('new_end_break')->nullable();
             $table->string('notes');
             $table->tinyInteger('approval')->default('0');
             $table->dateTime('applied_at');

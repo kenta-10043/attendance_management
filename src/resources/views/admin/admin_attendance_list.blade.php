@@ -41,10 +41,20 @@
                         {{ $userAttendance->clock_out ?? '' }}
                     </td>
                     <td class="attendance__item__data">
-                        {{ $userAttendance->break ?? '' }}
+                        @if (!empty($userAttendance->break_original) && $userAttendance->break_original !== '00:00')
+                            {{ $userAttendance->break_original }}
+                        @else
+                            {{ $userAttendance->break ?? '' }}
+                        @endif
                     </td>
                     <td class="attendance__item__data">
-                        {{ $userAttendance->work ?? '' }}
+                        @if (!empty($userAttendance) && ($userAttendance->approval ?? null) === 2)
+                            {{ $userAttendance->work ?? '' }}
+                        @elseif (!empty($userAttendance) && !empty($userAttendance->work_original) && $userAttendance->work_original !== '00:00')
+                            {{ $userAttendance->work_original }}
+                        @else
+                            {{ $userAttendance->work ?? '' }}
+                        @endif
                     </td>
                     <td class="attendance__item__data">
                         <form action="{{ route('admin.admin_attendance_detail', ['id' => $userAttendance->id]) }}"

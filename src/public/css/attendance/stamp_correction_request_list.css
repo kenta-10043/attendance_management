@@ -73,7 +73,9 @@
 }
 
 .alert-success {
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
+    color: white;
+    background-color: black;
+    font-weight: bolder;
+    margin-top: 5px;
+    padding-left: 5px;
 }

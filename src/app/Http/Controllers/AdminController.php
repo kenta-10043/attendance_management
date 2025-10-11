@@ -56,7 +56,10 @@ class AdminController extends Controller
                 'clock_in' => $data['clock_in'] ?? null,
                 'clock_out' => $data['clock_out'] ?? null,
                 'break' => $data['break'] ?? null,
+                'break_original' => $data['break_original'] ?? null,
                 'work' => $data['work'] ?? null,
+                'work_original' => $data['work_original'] ?? null,
+                'approval' => $data['approval'] ?? null,
             ];
         }
 
@@ -260,6 +263,7 @@ class AdminController extends Controller
             ->whereHas('application', fn($q) => $q->where('approval', 1))
             ->get();
 
+
         $approvedAttendances = Attendance::with('application', 'user')
             ->whereHas('user', fn($q) => $q->where('is_admin', 0))
             ->whereMonth('date', $currentMonth->month)
@@ -350,6 +354,7 @@ class AdminController extends Controller
         ]);
 
         // 休憩時間登録
+        $attendance->breakTimes()->delete();
         $starts = $request['start_break'] ?? [];
         $ends   = $request['end_break'] ?? [];
 
