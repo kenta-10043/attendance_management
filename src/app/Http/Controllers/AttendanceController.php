@@ -29,7 +29,21 @@ class AttendanceController extends Controller
         $now = $today->isoFormat('YYYY年MM月DD日 (ddd)');
         $attendance = $user->attendances()->whereDate('date', $today)->first();
         $latestAttendance = $user->attendances()->latest()->first();
-        $statusLabel = $latestAttendance?->status->label ?? '勤務外';
+        if ($latestAttendance) {
+            if ($latestAttendance->isFinished()) {
+                // 退勤時刻から1時間以内なら「退勤済み」
+                if (Carbon::parse($latestAttendance->clock_out)->gt(now()->subHour())) {
+                    $statusLabel = '退勤済';
+                } else {
+                    $statusLabel = '勤務外';
+                }
+            } else {
+                // 退勤していない場合は通常通り
+                $statusLabel = $latestAttendance->status->label;
+            }
+        } else {
+            $statusLabel = '勤務外';
+        }
 
         return view('attendance.attendance', compact('now', 'today', 'statusLabel', 'attendance'));
     }
@@ -45,12 +59,12 @@ class AttendanceController extends Controller
         $type = $request->input('type');
         if ($type === 'start' && !$attendance) {
 
-            $status = Status::firstOrCreate(['status' => 1]);  // 1 = 勤務中
+            $status = Status::firstOrCreate(['status' => 1]);  // 1 = 出勤中
 
             $attendance = Attendance::create([
                 'user_id' => $user->id,
-                'date' => now(),
-                'clock_in' => now(),
+                'date' => $request->input('date', now()->toDateString()),
+                'clock_in' => $request->input('clock_in', now()->toDateString()),
                 'status_id' => $status->id,
             ]);
 
@@ -64,7 +78,7 @@ class AttendanceController extends Controller
             BreakTime::create([
                 'user_id' => $user->id,
                 'attendance_id' => $attendance->id,
-                'start_break' => now(),
+                'start_break' => $request->input('start_break', now()->toDateString()),
             ]);
 
             $status = Status::firstOrCreate(['status' => 2]);  // 2 = 休憩中
@@ -79,7 +93,7 @@ class AttendanceController extends Controller
                 ->whereNull('end_break')
                 ->first();
 
-            if ($breakTime) $breakTime->update(['end_break' => now()]);
+            if ($breakTime) $breakTime->update(['end_break' => $request->input('end_break', now()->toDateString())]);
             $status = Status::firstOrCreate(['status' => 1]);
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
@@ -88,7 +102,7 @@ class AttendanceController extends Controller
 
         if ($type === 'end' && $attendance->isWorking()) {
             $attendance->update([
-                'clock_out' => now(),
+                'clock_out' => $request->input('clock_out', now()->toDateString()),
             ]);
 
             $status = Status::firstOrCreate(['status' => 3]); // 3 = 退勤済

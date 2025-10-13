@@ -26,7 +26,7 @@
             <span class="time-today" id="current-time">{{ $today->format('H:i') }}</span>
         </div>
 
-        @if (!$attendance || $attendance->isOffDuty())
+        @if (!$attendance || $statusLabel === '勤務外')
             <div>
                 <form action="{{ route('attendance.store') }}" method="POST">
                     @csrf
@@ -65,7 +65,7 @@
             </div>
         @endif
 
-        @if ($attendance && $attendance->isFinished())
+        @if ($statusLabel === '退勤済')
             <p class="finished__message">お疲れ様でした。</p>
         @endif
     </div>
