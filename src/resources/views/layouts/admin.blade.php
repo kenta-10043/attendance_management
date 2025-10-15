@@ -18,9 +18,9 @@
 
             @if (Auth::check())
                 <div class="link__menu">
-                    <a class="link__attendance" href="#">勤怠一覧</a>
-                    <a class="link__index" href="#">スタッフ一覧</a>
-                    <a class="link__application" href="#">申請一覧</a>
+                    <a class="link__attendance" href="{{ route('admin.admin_attendance_list') }}">勤怠一覧</a>
+                    <a class="link__index" href="{{ route('admin.admin_staff_list') }}">スタッフ一覧</a>
+                    <a class="link__application" href="{{ route('admin.admin_application_list') }} ">申請一覧</a>
                     <form action="{{ route('logout') }}" method="post">
                         @csrf
                         <input type="hidden" name="admin_logout" value="{{ Auth::user()->is_admin }}">

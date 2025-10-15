@@ -1,0 +1,81 @@
+.attendance__tittle {
+    width: 900px;
+    border-left: 8px solid;
+    padding-left: 21px;
+    margin-left: 311px;
+    margin-top: 91px;
+    margin-bottom: 47px;
+}
+
+.calendar {
+    width: 900px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.calendar__content {
+    width: 900px;
+    max-height: 2506px;
+    margin-bottom: 114px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    color: #737373;
+    text-align: center;
+}
+
+.application__content__tab {
+    width: 900px;
+    border-bottom: black 1px solid;
+    margin-bottom: 50px;
+    margin-left: 300px;
+    padding-bottom: 17px;
+    padding-left: 57px;
+
+
+}
+
+.pending__tab {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+
+}
+
+.approval__tab {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    margin-left: 106px;
+
+}
+
+.attendance__item {
+    width: 30px;
+    height: 33px;
+    border-bottom: 3px #E1E1E1 solid;
+    font-size: 16px;
+}
+
+.attendance__item__data {
+    border-bottom: 2px solid #E1E1E1;
+    height: 33px;
+    padding: 16px 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button__detail {
+    border: none;
+    background-color: #FFFFFF;
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+}
+
+.alert-success {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}

@@ -37,8 +37,22 @@
                     @endphp
                     <td class="attendance__item__data">{{ $attendanceTime['clock_in'] ?? '' }}</td>
                     <td class="attendance__item__data">{{ $attendanceTime['clock_out'] ?? '' }}</td>
-                    <td class="attendance__item__data">{{ $attendanceTime['break'] ?? '' }}</td>
-                    <td class="attendance__item__data">{{ $attendanceTime['work'] ?? '' }}</td>
+                    <td class="attendance__item__data">
+                        @if (!empty($attendanceTime['break_original']) && $attendanceTime['break_original'] !== '00:00')
+                            {{ $attendanceTime['break_original'] }}
+                        @else
+                            {{ $attendanceTime['break'] ?? '' }}
+                        @endif
+                    </td>
+                    <td class="attendance__item__data">
+                        @if (!empty($attendanceTime) && ($attendanceTime['approval'] ?? null) === 2)
+                            {{ $attendanceTime['work'] ?? '' }}
+                        @elseif (!empty($attendanceTime) && !empty($attendanceTime['work_original']) && $attendanceTime['work_original'] !== '00:00')
+                            {{ $attendanceTime['work_original'] }}
+                        @else
+                            {{ $attendanceTime['work'] ?? '' }}
+                        @endif
+                    </td>
 
                     <td class="attendance__item__data">
                         <form action="{{ route('attendance.detail', ['id' => $attendanceId]) }}" method="GET">
