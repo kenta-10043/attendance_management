@@ -21,10 +21,8 @@ class ClockOutFormTest extends TestCase
     {
         parent::setUp();
 
-        // テスト用ユーザー作成
         $this->user = User::factory()->create();
 
-        // ステータス作成
         $this->statusWorking = Status::create(['status' => 1]);   // 出勤中
         $this->statusFinished = Status::create(['status' => 3]);  // 退勤済
     }
@@ -32,7 +30,6 @@ class ClockOutFormTest extends TestCase
     /** @test */
     public function attendance_clock_out_display_status_finished()
     {
-        // 出勤中の勤怠
         $specifiedDate = now()->toDateString();
         $clockInDateTime = now()->toDateTimeString();
 
@@ -51,7 +48,6 @@ class ClockOutFormTest extends TestCase
         $response->assertSee('休憩入');
         $response->assertSee('退勤');
 
-        // 退勤済みの勤怠
         $response = $this->actingAs($this->user)->get('/attendance');
 
         $clockOutDateTime = Carbon::parse($clockInDateTime)->addHours(7);

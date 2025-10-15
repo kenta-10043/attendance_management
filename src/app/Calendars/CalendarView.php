@@ -12,18 +12,18 @@ class CalendarView
 
     public function __construct(?Carbon $date = null)   // nullで日付がなかった場合には本日を呼ぶ
     {
-        $this->carbon = $date ? $date->copy()->startOfMonth() : now()->startOfMonth();  //carbonのインスタンス生成 表示するカレンダー
+        $this->carbon = $date ? $date->copy()->startOfMonth() : now()->startOfMonth();
     }
 
-    // このカレンダーの基準月を返す
-    public function getDate(): Carbon
+
+    public function getDate(): Carbon  // このカレンダーの基準月を返す
     {
         return $this->carbon->copy();
     }
 
     public function getTitle()  //カレンダーのタイトル作成
     {
-        return $this->carbon->format('Y/n');
+        return $this->carbon->format('Y/m');
     }
 
     public function getMonth()
@@ -35,7 +35,7 @@ class CalendarView
         $current = $startOfMonth->copy();
 
         while ($current <= $endOfMonth) {
-            $days[] = $current->copy();  // Carbonインスタンスを保存
+            $days[] = $current->copy();
             $current->addDay();
         }
         return $days;

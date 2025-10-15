@@ -22,7 +22,6 @@ class AttendancePageTest extends TestCase
     {
         parent::setUp();
 
-        // テスト用ユーザーを作成
         $this->user = User::factory()->create();
     }
 
@@ -30,11 +29,9 @@ class AttendancePageTest extends TestCase
     /** @test */
     public function attendance_display_now_date()
     {
-        // ログインしてページを取得
-        $response = $this->actingAs($this->user)
-            ->get('/attendance');
 
-        // ステータスコードが200か
+        $response = $this->actingAs($this->user)->get('/attendance');
+
         $response->assertStatus(200);
 
         $today = now()->isoFormat('YYYY年MM月DD日 (ddd)');
@@ -44,10 +41,7 @@ class AttendancePageTest extends TestCase
     /** @test */
     public function attendance_display_status_off_duty()
     {
-        // ログインしてページを取得
-        $response = $this->actingAs($this->user)
-            ->get('/attendance');
-
+        $response = $this->actingAs($this->user)->get('/attendance');
         $response->assertStatus(200);
         $response->assertSee('勤務外');
     }
@@ -59,7 +53,7 @@ class AttendancePageTest extends TestCase
         $status = Status::create([
             'status' => 1,
         ]);
-        // 勤怠データを作成（ログインユーザーの今日の出勤中データ）
+
         $attendance = Attendance::factory()->create([
             'user_id' => $this->user->id,
             'clock_in' => now(),
@@ -68,7 +62,7 @@ class AttendancePageTest extends TestCase
             'status_id' => $status->id,
         ]);
 
-        // ログインしてページを取得
+
         $response = $this->actingAs($this->user)
             ->get('/attendance');
 
@@ -82,16 +76,15 @@ class AttendancePageTest extends TestCase
         $status = Status::create([
             'status' => 2,
         ]);
-        // 勤怠データを作成（ログインユーザーの今日の出勤中データ）
+
         $attendance = Attendance::factory()->create([
             'user_id' => $this->user->id,
             'clock_in' => now()->subHours(2),
-            'clock_out' => null, // 退勤していない
+            'clock_out' => null,
             'date' => now()->toDateString(),
             'status_id' => $status->id,
         ]);
 
-        // 休憩中データを作成（end_breakがnull）
         $breakTime = BreakTime::factory()->create([
             'user_id' => $this->user->id,
             'attendance_id' => $attendance->id,
@@ -99,14 +92,14 @@ class AttendancePageTest extends TestCase
             'end_break' => null,
         ]);
 
-        // ログインしてページを取得
+
         $response = $this->actingAs($this->user)
             ->get('/attendance');
 
-        // ステータスコードが200か
+
         $response->assertStatus(200);
 
-        // ページ上に「休憩中」という文字が表示されているか確認
+
         $response->assertSee('休憩中');
     }
 
@@ -116,23 +109,23 @@ class AttendancePageTest extends TestCase
         $status = Status::create([
             'status' => 3,
         ]);
-        // 勤怠データを作成（今日の出勤→退勤済み）
+
         $attendance = Attendance::factory()->create([
             'user_id' => $this->user->id,
-            'clock_in' => now()->subHours(8), // 8時間前に出勤
+            'clock_in' => now()->subHours(8),
             'clock_out' => now(),
             'date' => now()->toDateString(),
             'status_id' => $status->id,
         ]);
 
-        // ログインしてページを取得
+
         $response = $this->actingAs($this->user)
             ->get('/attendance');
 
-        // ステータスコードが200か
+
         $response->assertStatus(200);
 
-        // ページ上に「退勤済」という文字が表示されているか確認
+
         $response->assertSee('退勤済');
     }
 }

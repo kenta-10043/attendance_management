@@ -64,7 +64,7 @@ class AttendanceController extends Controller
             $attendance = Attendance::create([
                 'user_id' => $user->id,
                 'date' => $request->input('date', now()->toDateString()),
-                'clock_in' => $request->input('clock_in', now()->toDateString()),
+                'clock_in' => $request->input('clock_in', now()->toDateTimeString()),
                 'status_id' => $status->id,
             ]);
 
@@ -78,7 +78,7 @@ class AttendanceController extends Controller
             BreakTime::create([
                 'user_id' => $user->id,
                 'attendance_id' => $attendance->id,
-                'start_break' => $request->input('start_break', now()->toDateString()),
+                'start_break' => $request->input('start_break', now()->toDateTimeString()),
             ]);
 
             $status = Status::firstOrCreate(['status' => 2]);  // 2 = 休憩中
@@ -93,7 +93,7 @@ class AttendanceController extends Controller
                 ->whereNull('end_break')
                 ->first();
 
-            if ($breakTime) $breakTime->update(['end_break' => $request->input('end_break', now()->toDateString())]);
+            if ($breakTime) $breakTime->update(['end_break' => $request->input('end_break', now()->toDateTimeString())]);
             $status = Status::firstOrCreate(['status' => 1]);
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
@@ -102,7 +102,7 @@ class AttendanceController extends Controller
 
         if ($type === 'end' && $attendance->isWorking()) {
             $attendance->update([
-                'clock_out' => $request->input('clock_out', now()->toDateString()),
+                'clock_out' => $request->input('clock_out', now()->toDateTimeString()),
             ]);
 
             $status = Status::firstOrCreate(['status' => 3]); // 3 = 退勤済

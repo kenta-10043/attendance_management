@@ -21,10 +21,8 @@ class ClockInFormTest extends TestCase
     {
         parent::setUp();
 
-        // テスト用ユーザー作成
         $this->user = User::factory()->create();
 
-        // ステータス作成
         $this->statusWorking = Status::create(['status' => 1]);   // 出勤中
         $this->statusFinished = Status::create(['status' => 3]);  // 退勤済
     }
@@ -62,7 +60,7 @@ class ClockInFormTest extends TestCase
     public function attendance_clock_in_cannot_display_work_button_after_finish()
     {
         $response = $this->actingAs($this->user)->get('/attendance');
-        // 退勤済みの勤怠作成
+
         Attendance::factory()->create([
             'user_id' => $this->user->id,
             'clock_in' => now()->subHours(8),
