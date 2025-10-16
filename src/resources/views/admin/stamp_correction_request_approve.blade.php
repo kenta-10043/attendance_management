@@ -27,7 +27,7 @@
             <div class="attendance__item" id='date'>
                 <label class="item__label" for="date">日付</label>
                 <p class="date-year">{{ $attendanceDate->isoFormat('YYYY年') }} </p>
-                <p class="date-month">{{ $attendanceDate->isoFormat('MM月DD日') }} </p>
+                <p class="date-month">{{ $attendanceDate->isoFormat('M月D日') }} </p>
             </div>
 
 
