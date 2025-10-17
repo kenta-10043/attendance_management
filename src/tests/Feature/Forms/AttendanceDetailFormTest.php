@@ -491,18 +491,56 @@ class AttendanceDetailFormTest extends TestCase
             ->actingAs($user)
             ->post(route('attendance.storeApplication', ['id' => $attendances[1]->id]), $formData);
 
+        $adminUser = User::factory()->admin()->create([
+            'name' => '管理者ユーザー',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+        ]);
 
-        $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'pending']));
+        $application = Application::where('user_id', $user->id)->where('attendance_id', $attendances[0]->id)->first();
+
+        $formData = ([
+            '_token' => csrf_token(),
+            'user_id' => $attendances[0]->user_id,
+            'clock_in'  => '09:10',
+            'new_clock_out' => '17:10',
+            'notes'        => 'テスト1',
+            'start_break' => ['12:10'],
+            'end_break' => ['13:30'],
+            'approval'     => ApprovalStatus::APPROVED->value,
+            'applied_at'   => '2025-10-20 00:00:00',
+        ]);
+
+        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application->id]));
+
+        $application2 = Application::where('user_id', $user->id)->where('attendance_id', $attendances[1]->id)->first();
+
+        $formData = ([
+            '_token' => csrf_token(),
+            'user_id' => $attendances[1]->user_id,
+            'clock_in'  => '09:20',
+            'new_clock_out' => '17:20',
+            'notes'        => 'テスト2',
+            'start_break' => ['12:20'],
+            'end_break' => ['13:40'],
+            'approval'     => ApprovalStatus::APPROVED->value,
+            'applied_at'   => '2025-10-21 00:00:00',
+        ]);
+
+        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application2->id]));
+
+
+        $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'approved']));
 
         $response->assertSeeInOrder([
-            '承認待ち',
+            '承認済み',
             'テストユーザー',
             '2025/10/01',
             'テスト',
             '2025/10/20',
             '詳細',
 
-            '承認待ち',
+            '承認済み',
             'テストユーザー',
             '2025/10/02',
             'テスト',
