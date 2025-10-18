@@ -400,6 +400,7 @@ class AttendanceDetailFormTest extends TestCase
             '詳細',
         ]);
     }
+
     /** @test */
     public function attendance_detail_form_display_approval_list(): void
     {
@@ -503,15 +504,14 @@ class AttendanceDetailFormTest extends TestCase
             '_token' => csrf_token(),
             'user_id' => $attendances[0]->user_id,
             'clock_in'  => '09:10',
-            'new_clock_out' => '17:10',
+            'clock_out' => '17:10',
             'notes'        => 'テスト1',
             'start_break' => ['12:10'],
             'end_break' => ['13:30'],
             'approval'     => ApprovalStatus::APPROVED->value,
-            'applied_at'   => '2025-10-20 00:00:00',
         ]);
 
-        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application->id]));
+        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application->id]), $formData);
 
         $application2 = Application::where('user_id', $user->id)->where('attendance_id', $attendances[1]->id)->first();
 
@@ -519,15 +519,14 @@ class AttendanceDetailFormTest extends TestCase
             '_token' => csrf_token(),
             'user_id' => $attendances[1]->user_id,
             'clock_in'  => '09:20',
-            'new_clock_out' => '17:20',
+            'clock_out' => '17:20',
             'notes'        => 'テスト2',
             'start_break' => ['12:20'],
             'end_break' => ['13:40'],
             'approval'     => ApprovalStatus::APPROVED->value,
-            'applied_at'   => '2025-10-21 00:00:00',
         ]);
 
-        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application2->id]));
+        $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application2->id]), $formData);
 
 
         $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'approved']));
@@ -547,5 +546,72 @@ class AttendanceDetailFormTest extends TestCase
             '2025/10/21',
             '詳細',
         ]);
+    }
+
+    /** @test */
+    public function attendance_detail_form_application_list_show_detail(): void
+    {
+        $clockInDateTime = '2025-10-01 09:00:00';
+        $clockOutDateTime = '2025-10-01 17:00:00';
+        $startBreakDateTime = '2025-10-01 12:00:00';
+        $endBreakDateTime = '2025-10-01 13:00:00';
+
+        $user = User::factory()->create([
+            'name' => 'テストユーザー',
+        ]);
+        $status = Status::factory()->create([
+            'id' => 1,
+        ]);
+        $attendance = Attendance::factory()->create([
+            'user_id' => $user->id,
+            'status_id' => $status->id,
+            'clock_in' => $clockInDateTime,
+            'clock_out' => $clockOutDateTime,
+            'date' => '2025-10-01',
+        ]);
+
+
+        $attendance->breakTimes()->create([
+            'user_id' => $user->id,
+            'start_break' => $startBreakDateTime,
+            'end_break' => $endBreakDateTime,
+        ]);
+
+        $response = $this->actingAs($user)->get('/attendance/list');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
+
+        $formData = ([
+            '_token' => csrf_token(),
+            'user_id' => $attendance->user_id,
+            'new_clock_in'  => '09:10',
+            'new_clock_out' => '17:10',
+            'notes'        => 'テスト',
+            'new_start_break' => ['12:10'],
+            'new_end_break' => ['13:30'],
+            'approval'     => ApprovalStatus::PENDING->value,
+            'applied_at'   => '2025-10-20 00:00:00',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->post(route('attendance.storeApplication', ['id' => $attendance->id]), $formData);
+
+
+        $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'pending']));
+        $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
+
+        $response->assertSeeInOrder([
+            'テストユーザー',
+            '2025年',
+            '10月1日',
+            '9:10',
+            '17:10',
+            '12:10',
+            '13:30',
+            'テスト',
+        ]);
+        $response->assertSee('<p class="approval-status__alert">※承認待ちのため修正はできません。</p>', false);
     }
 }

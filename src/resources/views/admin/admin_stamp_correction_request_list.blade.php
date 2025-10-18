@@ -69,7 +69,7 @@
                                 ? \Carbon\Carbon::parse($approvedAttendance->application->applied_at)->format('Y/m/d')
                                 : '' }}
                         </td>
-                        <form action="{{ route('admin.admin_attendance_detail', ['id' => $approvedAttendance->id]) }} }}"
+                        <form action="{{ route('admin.admin_attendance_detail', ['id' => $approvedAttendance->id]) }}"
                             method="GET">
                             <td class="attendance__item__data"> <button class="button__detail" type="submit">詳細</button>
                             </td>
