@@ -350,7 +350,7 @@ class AdminController extends Controller
             'new_clock_in' => null,
             'new_clock_out' => null,
             'approval'     => ApprovalStatus::APPROVED->value,
-            'applied_at'   => now(),
+            // 'applied_at'   => $request->input('applied_at', now()),
         ]);
 
         // 休憩時間登録

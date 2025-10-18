@@ -29,7 +29,7 @@ class ApplicationController extends Controller
             'new_clock_out' => Carbon::parse("{$attendance->date} {$validated['new_clock_out']}")->format('Y-m-d H:i:s'),
             'notes'        => $validated['notes'],
             'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'applied_at'   => $request->input('applied_at', now()),
         ]);
 
         // 休憩時間も同じ日付で datetime に変換して登録
