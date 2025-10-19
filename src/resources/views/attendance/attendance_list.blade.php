@@ -7,7 +7,10 @@
 @endsection
 
 @section('content')
-    <h2 class="attendance__tittle">勤怠一覧</h2>
+    <div class="title__inner">
+        <h2 class="attendance__title">勤怠一覧</h2>
+    </div>
+
     <div class="calendar">
         <div class="calendar__date">
             <a class="link__previous" href="{{ route('attendance.list', ['date' => $prev->format('Y-m')]) }}">←前月</a>

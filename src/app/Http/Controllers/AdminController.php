@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 use App\Models\Attendance;
 use App\Models\Application;
 use App\Models\BreakTime;
@@ -176,10 +177,41 @@ class AdminController extends Controller
         $next = $currentMonth->copy()->addMonth();
         $prev = $currentMonth->copy()->subMonth();
 
-        return view(
-            'admin.admin_attendance_staff',
-            compact('user', 'title', 'currentMonth', 'next', 'prev', 'days', 'monthly')
-        );
+        if (!$request->has('download')) {
+
+            return view(
+                'admin.admin_attendance_staff',
+                compact('user', 'title', 'currentMonth', 'next', 'prev', 'days', 'monthly')
+            );
+        }
+
+        $filename = "月別スタッフ勤務一覧.csv";
+        $headers = [
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment;filename=\"$filename\"",
+        ];
+
+        $callback = function () use ($user, $date, $monthly, $days) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['スタッフ名', '対象月']);
+            fputcsv($file, [$user->name . 'さん', $date->format('Y年m月')]);
+            fputcsv($file, ['']);
+
+            fputcsv($file, ['日付', '出勤', '退勤', '休憩', '合計']);
+
+            foreach ($monthly as $i => $data) {
+                $date = $days[$i]->isoFormat('MM月DD日 (ddd)');
+                fputcsv($file, [
+                    $date,
+                    $data['clock_in'] ?? '',
+                    $data['clock_out'] ?? '',
+                    $data['break_original'] ?? '',
+                    $data['work'] ?? '',
+                ]);
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
     }
 
 

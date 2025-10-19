@@ -66,13 +66,10 @@
                 </tr>
             @endforeach
 
-
-
-
-
-
         </table>
 
+        <a class="csv__button"
+            href="{{ route('admin.admin_attendance_index', ['id' => $user->id, 'download' => 1]) }}">CSV出力</a>
     </div>
 
 

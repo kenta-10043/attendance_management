@@ -7,7 +7,10 @@
 @endsection
 
 @section('content')
-    <h2 class="attendance__tittle">{{ \Carbon\Carbon::parse($date)->isoFormat('YYYY年MM月D日') }}の勤怠一覧</h2>
+
+    <div class="title__inner">
+        <h2 class="attendance__tittle">{{ \Carbon\Carbon::parse($date)->isoFormat('YYYY年MM月D日') }}の勤怠一覧</h2>
+    </div>
 
     <div class="calendar">
 

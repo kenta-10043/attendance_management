@@ -14,7 +14,9 @@
         </div>
     @endif
 
-    <h2 class="attendance__tittle">勤怠詳細</h2>
+    <div class="title__inner">
+        <h2 class="attendance__title">勤怠詳細</h2>
+    </div>
 
     <div class="main__content">
         <div class="attendance__content">

@@ -20,21 +20,23 @@
 }
 
 .login__inner{
-    margin-top: 69px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: 0 auto;
 
 }
 
 .item-label{
+    margin-top: 72px;
     font-weight: bold;
     font-size: 24px;
-    margin-left: 416px;
 }
 
 .input__form{
     display: block;
     width: 680px;
     height: 60px;
-    margin-left: 416px;
 }
 
 .form__error{
@@ -46,14 +48,13 @@
 
 .navigation-item{
     width: 100%;
-
+    text-align: center;
 }
 
 .login__button{
     width: 680px;
     height: 60px;
     margin-top: 105px;
-    margin-left: 416px;
     background-color: black;
     border-radius: 5px;
     font-size: 26px;

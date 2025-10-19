@@ -1,20 +1,25 @@
-.attendance__tittle{
-    width: 900px;
+.title__inner{
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.attendance__title{
+    width: 100%;
     border-left: 8px solid;
     padding-left: 21px;
-    margin-left: 274px;
     margin-top: 91px;
     margin-bottom: 47px;
 }
 
 .calendar{
-    width: 900px;
+    max-width: 900px;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
 }
 
 .calendar__date{
-    width: 900px;
+    width: 100%;
     height: 60px;
     border-radius: 10px;
     background-color: #FFFFFF;

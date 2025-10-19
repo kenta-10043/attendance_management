@@ -36,10 +36,32 @@ body{
    font-size: 24px;
 }
 
+@media (max-width: 1085px) {
+    .link__attendance,
+        .link__index,
+        .link__application {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+    }
+}
+
 .button__logout{
    background-color: black;
    color: white;
    border: black;
    font-size: 24px;
    cursor: pointer;
+}
+
+@media (max-width: 1085px) {
+
+.button__logout{
+    background-color: black;
+    color: white;
+    border: black;
+    font-size: 16px;
+    cursor: pointer;
+    }
 }

@@ -1,20 +1,24 @@
-.attendance__tittle {
-    width: 900px;
+.title__inner{
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.attendance__title {
+    width: 100%;
     border-left: 8px solid;
     padding-left: 21px;
-    margin-left: 311px;
     margin-top: 91px;
     margin-bottom: 47px;
 }
 
 .calendar {
-    width: 900px;
+    max-width: 900px;
     text-align: center;
     margin: 0 auto;
 }
 
 .calendar__content {
-    width: 900px;
+    width: 100%;
     max-height: 1506px;
     margin-bottom: 114px;
     background-color: #FFFFFF;
@@ -23,15 +27,17 @@
     text-align: center;
 }
 
+.application__content__inner{
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .application__content__tab{
-    width: 900px;
+    width: 100%;
     border-bottom: black 1px solid;
     margin-bottom: 50px;
-    margin-left: 300px;
     padding-bottom: 17px;
     padding-left: 57px;
-
-
 }
 
 .pending__tab{
@@ -64,6 +70,17 @@
     font-size: 16px;
     font-weight: bold;
 }
+
+@media (max-width: 850px) {
+    .attendance__item__data {
+    border-bottom: 2px solid #E1E1E1;
+    height: 33px;
+    padding: 16px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    }
+}
+
 .button__detail {
     border: none;
     background-color: #FFFFFF;
