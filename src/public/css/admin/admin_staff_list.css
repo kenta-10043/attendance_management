@@ -1,13 +1,18 @@
+.title__inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .attendance__tittle {
     border-left: 8px solid;
     padding-left: 21px;
-    margin-left: 311px;
     margin-top: 91px;
     margin-bottom: 47px;
 }
 
 .calendar {
-    width: 900px;
+    max-width: 900px;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
 }
@@ -35,6 +40,16 @@
     height: 46px;
     font-size: 16px;
     font-weight: bold;
+}
+
+@media (max-width: 850px) {
+    .attendance__item__data {
+        border-bottom: 2px solid #E1E1E1;
+        height: 33px;
+        padding: 16px 8px;
+        font-size: 12px;
+        font-weight: bold;
+    }
 }
 
 .button__detail {

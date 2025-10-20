@@ -7,11 +7,15 @@
 @endsection
 
 @section('content')
-    <h2 class="attendance__tittle">申請一覧</h2>
+    <div class="title__inner">
+        <h2 class="attendance__tittle">申請一覧</h2>
+    </div>
 
-    <div class="application__content__tab">
-        <a class="pending__tab" href="{{ route('admin.admin_application_list', ['tab' => 'pending']) }}">承認待ち</a>
-        <a class="approval__tab" href="{{ route('admin.admin_application_list', ['tab' => 'approved']) }}">承認済み</a>
+    <div class="application__content__inner">
+        <div class="application__content__tab">
+            <a class="pending__tab" href="{{ route('admin.admin_application_list', ['tab' => 'pending']) }}">承認待ち</a>
+            <a class="approval__tab" href="{{ route('admin.admin_application_list', ['tab' => 'approved']) }}">承認済み</a>
+        </div>
     </div>
 
 

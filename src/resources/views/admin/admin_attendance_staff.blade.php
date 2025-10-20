@@ -7,7 +7,9 @@
 @endsection
 
 @section('content')
-    <h2 class="attendance__tittle">{{ $user->name }}さんの勤怠 </h2>
+    <div class="title__inner">
+        <h2 class="attendance__tittle">{{ $user->name }}さんの勤怠 </h2>
+    </div>
     <div class="calendar">
         <div class="calendar__date">
             <a class="link__previous"
@@ -68,8 +70,10 @@
 
         </table>
 
-        <a class="csv__button"
-            href="{{ route('admin.admin_attendance_index', ['id' => $user->id, 'download' => 1]) }}">CSV出力</a>
+        <div class="button__area">
+            <a class="csv__button"
+                href="{{ route('admin.admin_attendance_index', ['id' => $user->id, 'download' => 1]) }}">CSV出力</a>
+        </div>
     </div>
 
 

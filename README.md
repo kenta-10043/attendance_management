@@ -115,6 +115,74 @@ php artisan test
 - fortify \* v1.28.0
 - mailhog
 
+## テーブル仕様
+
+users テーブル
+
+|     カラム名      |      型      | primary key | unique key | not null | foreign key |
+| :---------------: | :----------: | :---------: | :--------: | :------: | :---------: |
+|        id         |   bigint.    |      ◯      |            |    ◯     |             |
+|       name        | varchar(255) |             |            |    ◯     |             |
+|       email       | varchar(255) |             |     ◯      |    ◯     |             |
+| email_verified_at |  timestamp   |             |            |          |             |
+|     password      | varchar(255) |      ◯      |            |          |             |
+|     is_admin      |   boolean    |             |            |          |             |
+|  remember_token   | varchar(100) |             |            |          |             |
+|    created_at     |  timestamp   |             |            |          |             |
+|    updated_at     |  timestamp   |             |            |          |             |
+
+attendaces テーブル
+
+|  カラム名  |    型     | primary key | unique key | not null | foreign key |
+| :--------: | :-------: | :---------: | :--------: | :------: | :---------: |
+|     id     |  bigint   |      ◯      |            |    ◯     |             |
+|  user_id   |  bigint   |             |            |    ◯     |  users(id)  |
+|  clock_in  | datetime  |             |            |          |             |
+| clock_out  | datetime  |             |            |          |             |
+|    date    |   date    |             |            |          |             |
+| created_at | timestamp |             |            |          |             |
+| updated_at | timestamp |             |            |          |             |
+
+break_times テーブル
+
+|    カラム名    |    型     | primary key | unique key | not null |   foreign key    |
+| :------------: | :-------: | :---------: | :--------: | :------: | :--------------: |
+|       id       |  bigint   |      ◯      |            |    ◯     |                  |
+|    user_id     |  bigint   |             |            |    ◯     |    users(id)     |
+| attendance_id  |  bigint   |             |            |    ◯     | attendances(id)  |
+| application_id |  bigint   |             |            |          | applications(id) |
+|  start_break   | datetime  |             |            |          |                  |
+|   end_break    | datetime  |             |            |          |                  |
+|   created_at   | timestamp |             |            |          |                  |
+|   updated_at   | timestamp |             |            |          |                  |
+
+applications テーブル
+
+|   カラム名    |      型      | primary key | unique key | not null |   foreign key   |
+| :-----------: | :----------: | :---------: | :--------: | :------: | :-------------: |
+|      id       |    bigint    |      ◯      |            |    ◯     |                 |
+|    user_id    |    bigint    |             |            |    ◯     |    users(id)    |
+| attendance_id |    bigint    |             |            |    ◯     | attendances(id) |
+| new_clock_in  |   datetime   |             |            |          |                 |
+| new_clock_out |   datetime   |             |            |          |                 |
+|   approval    |   tinyint    |             |            |    ◯     |                 |
+|    notes.     | varchar(255) |             |            |    ◯     |                 |
+|  applied_at.  |   datetime   |             |            |    ◯     |                 |
+|  created_at   |  timestamp   |             |            |          |                 |
+|  updated_at   |  timestamp   |             |            |          |                 |
+
+statuses テーブル
+
+|   カラム名    |    型     | primary key | unique key | not null |   foreign key   |
+| :-----------: | :-------: | :---------: | :--------: | :------: | :-------------: |
+|      id       |  bigint   |      ◯      |            |    ◯     |                 |
+|    user_id    |  bigint   |             |            |    ◯     |    users(id)    |
+| attendance_id |  bigint   |             |            |    ◯     | attendances(id) |
+|    status     |  tinyint  |             |            |          |                 |
+|  changed_at   | datetime  |             |            |    ◯     |                 |
+|  created_at   | timestamp |             |            |          |                 |
+|  updated_at   | timestamp |             |            |          |                 |
+
 ## ER 図
 
 ![ER](./)
