@@ -1,10 +1,16 @@
 # attendance_management
 
 ## サービス概要
-
+  
 現在競合他社で展開している勤怠アプリは、機能や画面が複雑で使いにくい仕様になっているものが多くあります。  
-そこでシンプルで直感的に使うことができる勤怠アプリを作成しました。
+そこでシンプルで直感的に使うことができる勤怠アプリを作成しました。 
 
+## サービス内容
+
+- fortfyによる認証機能（mailhogによるメール認証）
+- 管理者による勤怠確認、修正、承認、勤怠一覧のCSV出力
+- ユーザーによる勤怠打刻、勤怠確認、修正
+ 
 ## 環境構築
 
 ### Docker ビルド
@@ -21,7 +27,7 @@ git clone https://github.com/kenta-10043/attendance_management.git
 make init
 ```
 
-\*プロジェクト直下のディレクトリで実行してください。
+\*プロジェクト直下のディレクトリで実行してください。  
 \*MySQL は、OS によって起動しない場合があるのでそれぞれの PC に合わせて docker-compose.yml ファイルを編集してください。
 
 ### Laravel 環境構築
@@ -117,33 +123,34 @@ php artisan test
 
 ## テーブル仕様
 
-users テーブル
+- users テーブル
 
 |     カラム名      |      型      | primary key | unique key | not null | foreign key |
 | :---------------: | :----------: | :---------: | :--------: | :------: | :---------: |
 |        id         |   bigint.    |      ◯      |            |    ◯     |             |
 |       name        | varchar(255) |             |            |    ◯     |             |
-|       email       | varchar(255) |             |     ◯      |    ◯     |             |
+|       email       | varchar(255) |             |     　     |    ◯     |             |
 | email_verified_at |  timestamp   |             |            |          |             |
-|     password      | varchar(255) |      ◯      |            |          |             |
+|     password      | varchar(255) |             |       〇   |    〇    |             |
 |     is_admin      |   boolean    |             |            |          |             |
 |  remember_token   | varchar(100) |             |            |          |             |
 |    created_at     |  timestamp   |             |            |          |             |
 |    updated_at     |  timestamp   |             |            |          |             |
 
-attendaces テーブル
+- attendaces テーブル
 
 |  カラム名  |    型     | primary key | unique key | not null | foreign key |
 | :--------: | :-------: | :---------: | :--------: | :------: | :---------: |
 |     id     |  bigint   |      ◯      |            |    ◯     |             |
 |  user_id   |  bigint   |             |            |    ◯     |  users(id)  |
+|  status_id |  bigint   |             |            |    ◯     | statuses(id) |
 |  clock_in  | datetime  |             |            |          |             |
 | clock_out  | datetime  |             |            |          |             |
 |    date    |   date    |             |            |          |             |
 | created_at | timestamp |             |            |          |             |
 | updated_at | timestamp |             |            |          |             |
 
-break_times テーブル
+- break_times テーブル
 
 |    カラム名    |    型     | primary key | unique key | not null |   foreign key    |
 | :------------: | :-------: | :---------: | :--------: | :------: | :--------------: |
@@ -156,7 +163,7 @@ break_times テーブル
 |   created_at   | timestamp |             |            |          |                  |
 |   updated_at   | timestamp |             |            |          |                  |
 
-applications テーブル
+- applications テーブル
 
 |   カラム名    |      型      | primary key | unique key | not null |   foreign key   |
 | :-----------: | :----------: | :---------: | :--------: | :------: | :-------------: |
@@ -166,19 +173,17 @@ applications テーブル
 | new_clock_in  |   datetime   |             |            |          |                 |
 | new_clock_out |   datetime   |             |            |          |                 |
 |   approval    |   tinyint    |             |            |    ◯     |                 |
-|    notes.     | varchar(255) |             |            |    ◯     |                 |
-|  applied_at.  |   datetime   |             |            |    ◯     |                 |
+|    notes　     | varchar(255) |             |            |    ◯     |                 |
+|  applied_at　  |   datetime   |             |            |    ◯     |                 |
 |  created_at   |  timestamp   |             |            |          |                 |
 |  updated_at   |  timestamp   |             |            |          |                 |
 
-statuses テーブル
+- statuses テーブル
 
 |   カラム名    |    型     | primary key | unique key | not null |   foreign key   |
 | :-----------: | :-------: | :---------: | :--------: | :------: | :-------------: |
 |      id       |  bigint   |      ◯      |            |    ◯     |                 |
-|    user_id    |  bigint   |             |            |    ◯     |    users(id)    |
-| attendance_id |  bigint   |             |            |    ◯     | attendances(id) |
-|    status     |  tinyint  |             |            |          |                 |
+|    status     |  tinyint  |             |            |      ◯   |                 |
 |  changed_at   | datetime  |             |            |    ◯     |                 |
 |  created_at   | timestamp |             |            |          |                 |
 |  updated_at   | timestamp |             |            |          |                 |
@@ -191,6 +196,8 @@ statuses テーブル
 
 - 勤怠登録：http://localhost/attendance
 - ユーザー登録：http://localhost/register
+- ユーザーログイン：http://localhost/login
+- 管理者ログイン：http://localhost/admin/login 
 - phpMyAdmin：http://localhost:8080/
 
 ## ログイン情報
