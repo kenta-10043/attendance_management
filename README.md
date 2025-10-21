@@ -190,7 +190,7 @@ php artisan test
 
 ## ER 図
 
-![ER](./)
+![ER_attendance](./ER_attendance.png)
 
 ## 開発環境
 
