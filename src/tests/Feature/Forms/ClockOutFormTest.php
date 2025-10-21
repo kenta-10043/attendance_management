@@ -2,19 +2,21 @@
 
 namespace Tests\Feature\Forms;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Status;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ClockOutFormTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $statusWorking;
+
     protected $statusFinished;
 
     protected function setUp(): void
@@ -41,7 +43,6 @@ class ClockOutFormTest extends TestCase
             'status_id' => $this->statusWorking->id,
         ]);
 
-
         $response = $this->actingAs($this->user)->get('/attendance');
         $response->assertStatus(200);
         $response->assertSee('<span class="attendance__status">出勤中 </span>', false);
@@ -56,7 +57,7 @@ class ClockOutFormTest extends TestCase
             'user_id' => $this->user->id,
             'clock_out' => $clockOutDateTime->toDateTimeString(),
             'status_id' => $this->statusFinished->id,
-            'type' => 'end'
+            'type' => 'end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -84,24 +85,20 @@ class ClockOutFormTest extends TestCase
             'clock_out' => null,
             'date' => $specifiedDate,
             'status_id' => $this->statusWorking->id,
-            'type' => 'start'
+            'type' => 'start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
 
         $formData = [
             '_token' => csrf_token(),
             'user_id' => $this->user->id,
             'clock_out' => $clockOutDateTime->toDateTimeString(),
             'status_id' => $this->statusFinished->id,
-            'type' => 'end'
+            'type' => 'end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
-
-
 
         $response = $this->actingAs($this->user)->get('/attendance/list');
         $response->assertStatus(200);

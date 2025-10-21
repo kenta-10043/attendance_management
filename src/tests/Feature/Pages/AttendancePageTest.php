@@ -2,15 +2,12 @@
 
 namespace Tests\Feature\Pages;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
-
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendancePageTest extends TestCase
 {
@@ -24,7 +21,6 @@ class AttendancePageTest extends TestCase
 
         $this->user = User::factory()->create();
     }
-
 
     /** @test */
     public function attendance_display_now_date()
@@ -46,7 +42,6 @@ class AttendancePageTest extends TestCase
         $response->assertSee('勤務外');
     }
 
-
     /** @test */
     public function attendance_display_status_working()
     {
@@ -61,7 +56,6 @@ class AttendancePageTest extends TestCase
             'date' => now()->toDateString(),
             'status_id' => $status->id,
         ]);
-
 
         $response = $this->actingAs($this->user)
             ->get('/attendance');
@@ -92,13 +86,10 @@ class AttendancePageTest extends TestCase
             'end_break' => null,
         ]);
 
-
         $response = $this->actingAs($this->user)
             ->get('/attendance');
 
-
         $response->assertStatus(200);
-
 
         $response->assertSee('休憩中');
     }
@@ -118,13 +109,10 @@ class AttendancePageTest extends TestCase
             'status_id' => $status->id,
         ]);
 
-
         $response = $this->actingAs($this->user)
             ->get('/attendance');
 
-
         $response->assertStatus(200);
-
 
         $response->assertSee('退勤済');
     }

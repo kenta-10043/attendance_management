@@ -15,13 +15,13 @@ class WorkTimeCalculator
             ->where('date', $date)
             ->first();
 
-        if (!$attendance) {
+        if (! $attendance) {
             return null; // 完全に勤怠データがない場合のみ null
         }
 
         // 出勤・退勤時刻をCarbonに変換
         $start = Carbon::parse($attendance->clock_in);
-        $end   = Carbon::parse($attendance->clock_out);
+        $end = Carbon::parse($attendance->clock_out);
 
         // 出勤～退勤までの合計時間（分）
         $totalMinutes = $end->diffInMinutes($start);
@@ -56,15 +56,15 @@ class WorkTimeCalculator
 
         // 配列で返す
         return [
-            'id'        => $attendance->id,
+            'id' => $attendance->id,
             'user_name' => $attendance->user->name ?? '不明',
-            'clock_in'  => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,    // 出勤
+            'clock_in' => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,    // 出勤
             'clock_out' => $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : null,   // 退勤
-            'work'      => $this->formatMinutes($workMinutes),     // 実働時間
-            'work_original'     => $this->formatMinutes($workOriginalMinutes),  // 実働時間（申請前の休憩ベース）
-            'break'     => $this->formatMinutes($breakMinutes),    // 休憩時間
-            'break_original'  => $this->formatMinutes($originalBreakMinutes), // 申請前の休憩時間
-            'approval'  => optional($attendance->application)->approval,
+            'work' => $this->formatMinutes($workMinutes),     // 実働時間
+            'work_original' => $this->formatMinutes($workOriginalMinutes),  // 実働時間（申請前の休憩ベース）
+            'break' => $this->formatMinutes($breakMinutes),    // 休憩時間
+            'break_original' => $this->formatMinutes($originalBreakMinutes), // 申請前の休憩時間
+            'approval' => optional($attendance->application)->approval,
         ];
     }
 
@@ -77,6 +77,7 @@ class WorkTimeCalculator
     {
         $hours = floor($minutes / 60);
         $remain = $minutes % 60;
+
         return sprintf('%02d:%02d', $hours, $remain);
     }
 }

@@ -2,11 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
-use App\Models\Status;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attendance>
@@ -14,6 +12,7 @@ use Carbon\Carbon;
 class AttendanceFactory extends Factory
 {
     protected $model = Attendance::class;
+
     /**
      * Define the model's default state.
      *
@@ -22,7 +21,7 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth   = Carbon::now()->endOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
 
         // 出勤時間を当月内でランダムに生成
         $clockIn = Carbon::instance($this->faker->dateTimeBetween($startOfMonth, $endOfMonth))

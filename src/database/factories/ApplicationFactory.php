@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Application;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Application>
@@ -18,7 +17,7 @@ class ApplicationFactory extends Factory
      */
     public function definition(): array
     {
-        return  [
+        return [
             'approval' => 0,
             'notes' => 'テスト申請',
             'applied_at' => Carbon::now(),

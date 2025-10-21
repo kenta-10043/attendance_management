@@ -2,29 +2,31 @@
 
 namespace Tests\Feature\Admin\Forms;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
+use App\Enums\ApprovalStatus;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
-use App\Models\application;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
-use App\Enums\ApprovalStatus;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminAttendanceCorrectionTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $adminUser;
-    protected $startDate;
-    protected $startClockIn;
-    protected $startClockOut;
-    protected $user;
-    protected $status;
 
+    protected $startDate;
+
+    protected $startClockIn;
+
+    protected $startClockOut;
+
+    protected $user;
+
+    protected $status;
 
     protected function setUp(): void
     {
@@ -58,12 +60,12 @@ class AdminAttendanceCorrectionTest extends TestCase
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 12:00:00",
-                        'end_break'   => "{$attendance->date} 13:00:00",
+                        'end_break' => "{$attendance->date} 13:00:00",
                     ],
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 15:00:00",
-                        'end_break'   => "{$attendance->date} 15:15:00",
+                        'end_break' => "{$attendance->date} 15:15:00",
                     ]
                 ))
                 ->for($attendance)
@@ -104,11 +106,11 @@ class AdminAttendanceCorrectionTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $this->user->id,
-            'clock_in'  => '20:00',
+            'clock_in' => '20:00',
             'clock_out' => '17:10',
-            'notes'        => 'テスト',
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => now(),
+            'notes' => 'テスト',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => now(),
         ]);
 
         $response = $this->actingAs($this->adminUser)->post(route('admin.admin_storeAttendance', ['id' => $attendance->id ?? null]), $formData);
@@ -128,13 +130,13 @@ class AdminAttendanceCorrectionTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $this->user->id,
-            'clock_in'  => '09:10',
+            'clock_in' => '09:10',
             'clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'start_break' => ['18:10'],
             'end_break' => ['17:00'],
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this->followingRedirects()
@@ -154,13 +156,13 @@ class AdminAttendanceCorrectionTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $this->user->id,
-            'clock_in'  => '09:10',
+            'clock_in' => '09:10',
             'clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'start_break' => ['16:10'],
             'end_break' => ['17:30'],
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this->followingRedirects()
@@ -177,17 +179,16 @@ class AdminAttendanceCorrectionTest extends TestCase
         $attendance = $this->user->attendances->first();
         $response = $this->actingAs($this->adminUser)->get(route('admin.admin_attendance_detail', ['id' => $attendance->id]));
 
-
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'clock_in'  => '09:10',
+            'clock_in' => '09:10',
             'clock_out' => '17:10',
-            'notes'        => null,
+            'notes' => null,
             'start_break' => ['12:10'],
             'end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => now(),
         ]);
 
         $response = $this->actingAs($this->adminUser)->post(route('admin.admin_storeAttendance', ['id' => $attendance->id ?? null]), $formData);

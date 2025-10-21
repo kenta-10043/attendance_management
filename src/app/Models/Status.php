@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\AttendanceStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\AttendanceStatus;
-use App\Models\Attendance;
 
 class Status extends Model
 {

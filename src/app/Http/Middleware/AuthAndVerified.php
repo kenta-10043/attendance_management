@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthAndVerified
@@ -16,13 +15,14 @@ class AuthAndVerified
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login')->with('error', 'ログインが必要です。');
         }
 
-        if (!Auth::user()->hasVerifiedEmail()) {
+        if (! Auth::user()->hasVerifiedEmail()) {
             return redirect('/email/verify')->with('error', 'メール認証が必要です。');
         }
+
         return $next($request);
     }
 }

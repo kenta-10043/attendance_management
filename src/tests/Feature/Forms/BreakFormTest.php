@@ -2,25 +2,27 @@
 
 namespace Tests\Feature\Forms;
 
+use App\Models\Attendance;
+use App\Models\Status;
+use App\Models\User;
+use App\Services\WorkTimeCalculator;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Attendance;
-use App\Models\BreakTime;
-use App\Models\Status;
-use App\Services\WorkTimeCalculator;
 
 class BreakFormTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
-    protected $attendance;
-    protected $statusWorking;
-    protected $statusOnBreak;
-    protected $specifiedDate;
 
+    protected $attendance;
+
+    protected $statusWorking;
+
+    protected $statusOnBreak;
+
+    protected $specifiedDate;
 
     protected function setUp(): void
     {
@@ -41,7 +43,6 @@ class BreakFormTest extends TestCase
         ]);
     }
 
-
     /** @test */
     public function attendance_break_display_status_break()
     {
@@ -57,11 +58,10 @@ class BreakFormTest extends TestCase
             'start_break' => now()->toDateString(),
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
 
         $response = $this->actingAs($this->user)->get('/attendance');
         $response->assertSee('休憩中');
@@ -83,7 +83,7 @@ class BreakFormTest extends TestCase
             'start_break' => now()->toDateString(),
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -97,7 +97,7 @@ class BreakFormTest extends TestCase
             'attendance_id' => $this->attendance->id,
             'end_break' => $endBreakDateTime->toDateTimeString(),
             'status_id' => $this->statusWorking->id,
-            'type' => 'break_end'
+            'type' => 'break_end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -124,12 +124,10 @@ class BreakFormTest extends TestCase
             'start_break' => $startBreakDateTime,
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
-
 
         $formData = [
             '_token' => csrf_token(),
@@ -137,7 +135,7 @@ class BreakFormTest extends TestCase
             'attendance_id' => $this->attendance->id,
             'end_break' => $endBreakDateTime->toDateTimeString(),
             'status_id' => $this->statusWorking->id,
-            'type' => 'break_end'
+            'type' => 'break_end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -164,12 +162,10 @@ class BreakFormTest extends TestCase
             'start_break' => $startBreakDateTime,
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
-
 
         $formData = [
             '_token' => csrf_token(),
@@ -177,7 +173,7 @@ class BreakFormTest extends TestCase
             'attendance_id' => $this->attendance->id,
             'end_break' => $endBreakDateTime->toDateTimeString(),
             'status_id' => $this->statusWorking->id,
-            'type' => 'break_end'
+            'type' => 'break_end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -191,11 +187,10 @@ class BreakFormTest extends TestCase
             'start_break' => $secondStartBreakDateTime->toDateString(),
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
 
         $response = $this->actingAs($this->user)->get('/attendance');
         $response->assertSee('休憩中');
@@ -219,12 +214,10 @@ class BreakFormTest extends TestCase
             'start_break' => $startBreakDateTime,
             'end_break' => null,
             'status_id' => $this->statusOnBreak->id,
-            'type' => 'break_start'
+            'type' => 'break_start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
-
-
 
         $formData = [
             '_token' => csrf_token(),
@@ -232,7 +225,7 @@ class BreakFormTest extends TestCase
             'attendance_id' => $this->attendance->id,
             'end_break' => $endBreakDateTime->toDateTimeString(),
             'status_id' => $this->statusWorking->id,
-            'type' => 'break_end'
+            'type' => 'break_end',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);
@@ -240,8 +233,6 @@ class BreakFormTest extends TestCase
         $calculator = new WorkTimeCalculator;
         $data = $calculator->getDailyWorkAndBreak($this->user->id, $this->specifiedDate);
         $break = $data['break_original'] ?? $data['break'];
-
-
 
         $response = $this->actingAs($this->user)->get('/attendance/list');
         $response->assertStatus(200);

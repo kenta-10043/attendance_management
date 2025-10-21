@@ -1,27 +1,24 @@
 <?php
 
-
 namespace App\Calendars;
 
 use Carbon\Carbon;
-
 
 class CalendarView
 {
     protected $carbon;
 
-    public function __construct(?Carbon $date = null)   // nullで日付がなかった場合には本日を呼ぶ
+    public function __construct(?Carbon $date = null)
     {
         $this->carbon = $date ? $date->copy()->startOfMonth() : now()->startOfMonth();
     }
 
-
-    public function getDate(): Carbon  // このカレンダーの基準月を返す
+    public function getDate(): Carbon  // このカレンダーの基準月
     {
         return $this->carbon->copy();
     }
 
-    public function getTitle()  //カレンダーのタイトル作成
+    public function getTitle()  // カレンダーのタイトル作成
     {
         return $this->carbon->format('Y/m');
     }
@@ -38,6 +35,7 @@ class CalendarView
             $days[] = $current->copy();
             $current->addDay();
         }
+
         return $days;
     }
 }

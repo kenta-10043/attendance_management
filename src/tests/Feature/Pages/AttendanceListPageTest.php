@@ -3,19 +3,15 @@
 namespace Tests\Feature\Pages;
 
 use App\Calendars\CalendarView;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use App\Models\Attendance;
+use App\Models\Status;
+use App\Models\User;
+use App\Services\WorkTimeCalculator;
+use Carbon\Carbon;
 use Database\Seeders\AttendanceSeeder;
 use Database\Seeders\StatusSeeder;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Attendance;
-use App\Models\BreakTime;
-use App\Models\Status;
-use App\Services\WorkTimeCalculator;
-
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendanceListPageTest extends TestCase
 {
@@ -39,7 +35,6 @@ class AttendanceListPageTest extends TestCase
         $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
         $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
 
-
         $attendances = Attendance::where('user_id', $user->id)
             ->whereBetween('date', [$startOfMonth, $endOfMonth])->get();
 
@@ -54,13 +49,13 @@ class AttendanceListPageTest extends TestCase
                 $response->assertSee(Carbon::parse($attendance->clock_in)->format('H:i'));
                 $response->assertSee(Carbon::parse($attendance->clock_out)->format('H:i'));
 
-                if (!empty($break)) {
+                if (! empty($break)) {
                     $break = $data['break_original'] ?? $data['break'];
                 } else {
                     $response->assertSee('');
                 }
 
-                if (!empty($workTime)) {
+                if (! empty($workTime)) {
                     $workTime = $data['work_original'] ?? $data['work'];
                     $response->assertSee($workTime);
                 } else {
@@ -97,7 +92,6 @@ class AttendanceListPageTest extends TestCase
 
         $response = $this->actingAs($user)->get('/attendance/list');
         $response->assertStatus(200);
-
 
         $response = $this->actingAs($user)->get(route('attendance.list', ['date' => $prev->format('Y-m')]));
         $response->assertStatus(200);

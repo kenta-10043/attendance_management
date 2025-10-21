@@ -2,31 +2,41 @@
 
 namespace Tests\Feature\Admin\Pages;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminAttendanceListTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $adminUser;
+
     protected $startDate;
+
     protected $startClockIn;
+
     protected $startClockOut;
+
     protected $user1;
+
     protected $user2;
+
     protected $status1;
+
     protected $status2;
+
     protected $status3;
+
     protected $status4;
+
     protected $status5;
+
     protected $status6;
 
     protected function setUp(): void
@@ -81,12 +91,12 @@ class AdminAttendanceListTest extends TestCase
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 12:00:00",
-                        'end_break'   => "{$attendance->date} 13:00:00",
+                        'end_break' => "{$attendance->date} 13:00:00",
                     ],
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 15:00:00",
-                        'end_break'   => "{$attendance->date} 15:15:00",
+                        'end_break' => "{$attendance->date} 15:15:00",
                     ]
                 ))
                 ->for($attendance)
@@ -128,12 +138,12 @@ class AdminAttendanceListTest extends TestCase
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 12:00:00",
-                        'end_break'   => "{$attendance->date} 13:00:00",
+                        'end_break' => "{$attendance->date} 13:00:00",
                     ],
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 15:00:00",
-                        'end_break'   => "{$attendance->date} 15:15:00",
+                        'end_break' => "{$attendance->date} 15:15:00",
                     ]
                 ))
                 ->for($attendance)

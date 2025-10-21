@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Attendance;
-use App\Models\BreakTime;
-use App\Models\Application;
-
 
 class User extends Authenticatable implements MustVerifyEmail
 {

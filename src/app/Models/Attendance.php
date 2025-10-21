@@ -4,13 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\user;
-use App\Models\BreakTime;
-use App\Models\Status;
-use App\Models\Application;
-
-
-
 
 class Attendance extends Model
 {

@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\BreakTime;
-use App\Models\Attendance;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BreakTime>
@@ -23,9 +21,9 @@ class BreakTimeFactory extends Factory
     {
         return [
             'attendance_id' => 0, // ダミー
-            'user_id'       => 0, // ダミー
-            'start_break'   => now(),
-            'end_break'     => now()->addMinutes(60),
+            'user_id' => 0, // ダミー
+            'start_break' => now(),
+            'end_break' => now()->addMinutes(60),
 
         ];
     }

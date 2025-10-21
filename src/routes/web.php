@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
-use Illuminate\Routing\Route as RoutingRoute;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use App\Http\Controllers\AdminAuthenticatedSessionController;
+use App\Http\Controllers\AttendanceController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

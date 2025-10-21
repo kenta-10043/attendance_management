@@ -2,14 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ApprovalStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Attendance;
-use App\Models\User;
-use App\Models\BreakTime;
-use App\Enums\ApprovalStatus;
-
-
 
 class Application extends Model
 {

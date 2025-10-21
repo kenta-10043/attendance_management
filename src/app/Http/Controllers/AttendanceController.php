@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
+use App\Calendars\CalendarView;
+use App\Models\Attendance;
+use App\Models\BreakTime;
+use App\Models\Status;
+use App\Services\WorkTimeCalculator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Attendance;
-use App\Models\Application;
-use App\Models\Status;
-use App\Models\BreakTime;
-use App\Models\User;
-use Carbon\Carbon;
-use App\Enums\AttendanceStatus;
-use App\Enums\ApprovalStatus;
-use App\Calendars\CalendarView;
-use App\Http\Requests\AttendanceRequest;
-
-use App\Services\WorkTimeCalculator;
-
 
 class AttendanceController extends Controller
 {
@@ -48,7 +39,6 @@ class AttendanceController extends Controller
         return view('attendance.attendance', compact('now', 'today', 'statusLabel', 'attendance'));
     }
 
-
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -57,7 +47,7 @@ class AttendanceController extends Controller
         $attendance = Attendance::where('user_id', $user->id)->whereDate('date', $today)->first();
 
         $type = $request->input('type');
-        if ($type === 'start' && !$attendance) {
+        if ($type === 'start' && ! $attendance) {
 
             $status = Status::firstOrCreate(['status' => 1]);  // 1 = 出勤中
 
@@ -71,8 +61,9 @@ class AttendanceController extends Controller
             return back()->with('message', '出勤しました');
         }
 
-        if (!$attendance)
+        if (! $attendance) {
             return back()->with('message', '出勤していません');
+        }
 
         if ($type === 'break_start' && $attendance->isWorking()) {
             BreakTime::create([
@@ -93,10 +84,13 @@ class AttendanceController extends Controller
                 ->whereNull('end_break')
                 ->first();
 
-            if ($breakTime) $breakTime->update(['end_break' => $request->input('end_break', now()->toDateTimeString())]);
+            if ($breakTime) {
+                $breakTime->update(['end_break' => $request->input('end_break', now()->toDateTimeString())]);
+            }
             $status = Status::firstOrCreate(['status' => 1]);
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
+
             return back()->with('message', '休憩終了しました');
         }
 
@@ -147,23 +141,19 @@ class AttendanceController extends Controller
         $userName = $attendance->user->name;
         $attendanceDate = Carbon::parse($attendance->date);
 
-        // 勤怠の出退勤と休憩
         $attendanceClockIn = Carbon::parse($attendance->clock_in);
         $attendanceClockOut = Carbon::parse($attendance->clock_out);
-        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
-        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
+        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
 
-        // 最新の申請（存在しなければ null）
         $application = $attendance->application()->latest()->first();
 
         if ($application) {
-            // 申請の出退勤
-            $applicationClockIn  = Carbon::parse($application->new_clock_in);
+            $applicationClockIn = Carbon::parse($application->new_clock_in);
             $applicationClockOut = Carbon::parse($application->new_clock_out);
 
-            // 申請の休憩時間
-            $applicationStartBreaks = $application->breakTimes()->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
-            $applicationEndBreaks   = $application->breakTimes()->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+            $applicationStartBreaks = $application->breakTimes()->pluck('start_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
+            $applicationEndBreaks = $application->breakTimes()->pluck('end_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
         } else {
             $applicationClockIn = null;
             $applicationClockOut = null;

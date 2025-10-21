@@ -22,11 +22,11 @@ class AttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'clock_in' => ['required', 'date_format:H:i', 'before:clock_out'],  //attendances_table
+            'clock_in' => ['required', 'date_format:H:i', 'before:clock_out'],  // attendances_table
             'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
             'notes' => ['required', 'max:255'],
 
-            'start_break' => ['array'],  //breakTime_table
+            'start_break' => ['array'],  // breakTime_table
             'end_break' => ['array'],
 
             'start_break.*' => ['nullable', 'date_format:H:i'],
@@ -60,13 +60,15 @@ class AttendanceRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!$this->clock_in || !$this->clock_out) return;
+            if (! $this->clock_in || ! $this->clock_out) {
+                return;
+            }
 
             $clockIn = \Carbon\Carbon::createFromFormat('H:i', $this->clock_in);
             $clockOut = \Carbon\Carbon::createFromFormat('H:i', $this->clock_out);
 
             $starts = $this->input('start_break', []);
-            $ends   = $this->input('end_break', []);
+            $ends = $this->input('end_break', []);
 
             foreach ($starts as $i => $start) {
                 $end = $ends[$i] ?? null;
@@ -78,13 +80,14 @@ class AttendanceRequest extends FormRequest
                 // 🟠 片方だけ空ならエラー
                 if (blank($start) xor blank($end)) {
                     $validator->errors()->add("start_break.$i", '休憩の開始と終了は両方入力してください');
+
                     continue;
                 }
 
                 // 🟢 Carbon変換は空でない場合のみ
                 try {
                     $startTime = \Carbon\Carbon::createFromFormat('H:i', $start);
-                    $endTime   = \Carbon\Carbon::createFromFormat('H:i', $end);
+                    $endTime = \Carbon\Carbon::createFromFormat('H:i', $end);
                 } catch (\Exception $e) {
                     continue; // 変換失敗はスキップ
                 }

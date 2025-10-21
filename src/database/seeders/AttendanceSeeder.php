@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\User;
+use App\Models\Application;
 use App\Models\Attendance;
 use App\Models\BreakTime;
-use App\Models\Application;
+use App\Models\User;
 use Carbon\Carbon;
-
+use Illuminate\Database\Seeder;
 
 class AttendanceSeeder extends Seeder
 {
@@ -40,10 +38,12 @@ class AttendanceSeeder extends Seeder
 
             foreach ($months as $month) {
                 $startOfMonth = $month->copy()->startOfMonth();
-                $endOfMonth   = $month->copy()->endOfMonth();
+                $endOfMonth = $month->copy()->endOfMonth();
 
                 for ($date = $startOfMonth->copy(); $date->lte($endOfMonth); $date->addDay()) {
-                    if (rand(1, 100) <= 30) continue; // 30%休み
+                    if (rand(1, 100) <= 30) {
+                        continue;
+                    } // 30%休み
 
                     // 勤怠作成
                     $clockIn = $date->copy()->setTime(rand(8, 9), rand(0, 59));
@@ -58,7 +58,7 @@ class AttendanceSeeder extends Seeder
 
                     // 昼休憩
                     $lunchStart = $date->copy()->setTime(12, 0);
-                    $lunchEnd   = $lunchStart->copy()->addHour();
+                    $lunchEnd = $lunchStart->copy()->addHour();
                     BreakTime::factory()->create([
                         'attendance_id' => $attendance->id,
                         'user_id' => $user->id,
@@ -87,7 +87,7 @@ class AttendanceSeeder extends Seeder
 
             // --- 今月の勤怠だけ抽出して必ず5件修正申請 ---
             $attendanceForApplication = $userAttendances
-                ->filter(fn($attendance) => Carbon::parse($attendance->date)->month === Carbon::now()->month)
+                ->filter(fn ($attendance) => Carbon::parse($attendance->date)->month === Carbon::now()->month)
                 ->shuffle()
                 ->take(5);
 
@@ -108,7 +108,7 @@ class AttendanceSeeder extends Seeder
                         'attendance_id' => $break->attendance_id,
                         'user_id' => $user->id,
                         'start_break' => Carbon::parse($break->start_break)->copy()->addMinutes(rand(-5, 5)),
-                        'end_break'   => Carbon::parse($break->end_break)->copy()->addMinutes(rand(-5, 5)),
+                        'end_break' => Carbon::parse($break->end_break)->copy()->addMinutes(rand(-5, 5)),
                         'application_id' => $application->id,
                     ]);
                 });

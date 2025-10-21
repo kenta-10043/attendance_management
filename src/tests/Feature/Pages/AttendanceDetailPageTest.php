@@ -2,14 +2,12 @@
 
 namespace Tests\Feature\Pages;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendanceDetailPageTest extends TestCase
 {

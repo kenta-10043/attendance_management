@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ApplicationRequest extends FormRequest
 {
@@ -59,13 +59,15 @@ class ApplicationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!$this->new_clock_in || !$this->new_clock_out) return;
+            if (! $this->new_clock_in || ! $this->new_clock_out) {
+                return;
+            }
 
             $clockIn = Carbon::createFromFormat('H:i', $this->new_clock_in);
             $clockOut = Carbon::createFromFormat('H:i', $this->new_clock_out);
 
             $starts = $this->input('new_start_break', []);
-            $ends   = $this->input('new_end_break', []);
+            $ends = $this->input('new_end_break', []);
 
             foreach ($starts as $i => $start) {
                 $end = $ends[$i] ?? null;
@@ -77,13 +79,14 @@ class ApplicationRequest extends FormRequest
                 // 🟠 片方だけ空ならエラー
                 if (blank($start) xor blank($end)) {
                     $validator->errors()->add("new_start_break.$i", '休憩の開始と終了は両方入力してください');
+
                     continue;
                 }
 
                 // 🟢 Carbon変換は空でない場合のみ
                 try {
                     $startTime = Carbon::createFromFormat('H:i', $start);
-                    $endTime   = Carbon::createFromFormat('H:i', $end);
+                    $endTime = Carbon::createFromFormat('H:i', $end);
                 } catch (\Exception $e) {
                     continue; // 変換失敗はスキップ
                 }

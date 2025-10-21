@@ -2,19 +2,21 @@
 
 namespace Tests\Feature\Forms;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Status;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ClockInFormTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $user;
+
     protected $statusWorking;
+
     protected $statusFinished;
 
     protected function setUp(): void
@@ -43,7 +45,7 @@ class ClockInFormTest extends TestCase
             'clock_out' => null,
             'date' => now()->toDateString(),
             'status_id' => $this->statusWorking->id,
-            'type' => 'start'
+            'type' => 'start',
         ];
 
         $response = $this->actingAs($this->user)
@@ -92,7 +94,7 @@ class ClockInFormTest extends TestCase
             'clock_out' => null,
             'date' => $specifiedDate,
             'status_id' => $this->statusWorking->id,
-            'type' => 'start'
+            'type' => 'start',
         ];
 
         $response = $this->post(route('attendance.store'), $formData);

@@ -2,9 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 
 class CustomLogoutResponse implements LogoutResponseContract
 {

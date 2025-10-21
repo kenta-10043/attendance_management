@@ -2,35 +2,44 @@
 
 namespace Tests\Feature\Admin\Forms;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Attendance;
+use App\Enums\ApprovalStatus;
 use App\Models\Application;
+use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
-use App\Enums\ApprovalStatus;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AdminApproveTest extends TestCase
 {
     use RefreshDatabase;
 
     protected $adminUser;
-    protected $startDate;
-    protected $startClockIn;
-    protected $startClockOut;
-    protected $user1;
-    protected $user2;
-    protected $status1;
-    protected $status2;
-    protected $status3;
-    protected $status4;
-    protected $application1;
-    protected $application2;
 
+    protected $startDate;
+
+    protected $startClockIn;
+
+    protected $startClockOut;
+
+    protected $user1;
+
+    protected $user2;
+
+    protected $status1;
+
+    protected $status2;
+
+    protected $status3;
+
+    protected $status4;
+
+    protected $application1;
+
+    protected $application2;
 
     protected function setUp(): void
     {
@@ -42,7 +51,6 @@ class AdminApproveTest extends TestCase
         $this->status2 = Status::factory()->create(['id' => 2]);
         $this->status3 = Status::factory()->create(['id' => 3]);
         $this->status4 = Status::factory()->create(['id' => 4]);
-
 
         $this->startDate = Carbon::parse('2025-10-01');
         $this->startClockIn = Carbon::parse('2025-10-01 09:00:00');
@@ -78,12 +86,12 @@ class AdminApproveTest extends TestCase
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 12:00:00",
-                        'end_break'   => "{$attendance->date} 13:00:00",
+                        'end_break' => "{$attendance->date} 13:00:00",
                     ],
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 15:00:00",
-                        'end_break'   => "{$attendance->date} 15:15:00",
+                        'end_break' => "{$attendance->date} 15:15:00",
                     ]
                 ))
                 ->for($attendance)
@@ -121,7 +129,6 @@ class AdminApproveTest extends TestCase
                 ],
             );
 
-
         $this->user2 = User::factory()
             ->has(
                 Attendance::factory()
@@ -151,12 +158,12 @@ class AdminApproveTest extends TestCase
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 12:00:00",
-                        'end_break'   => "{$attendance->date} 13:00:00",
+                        'end_break' => "{$attendance->date} 13:00:00",
                     ],
                     [
                         'user_id' => $attendance->user_id,
                         'start_break' => "{$attendance->date} 15:00:00",
-                        'end_break'   => "{$attendance->date} 15:15:00",
+                        'end_break' => "{$attendance->date} 15:15:00",
                     ]
                 ))
                 ->for($attendance)
@@ -248,7 +255,6 @@ class AdminApproveTest extends TestCase
             ],
         ]);
 
-
         $response = $this->actingAs($this->adminUser)->get(route('admin.admin_application_list', ['tab' => 'approved']));
 
         $response->assertSee('<h2 class="attendance__tittle">申請一覧</h2>', false);
@@ -304,12 +310,12 @@ class AdminApproveTest extends TestCase
             '_token' => csrf_token(),
             'user_id' => $this->user1->id,
             'attendance_id' => $firstAttendance1->id,
-            'clock_in'  => '10:00',
+            'clock_in' => '10:00',
             'clock_out' => '19:00',
-            'notes'        => 'テスト申請1',
+            'notes' => 'テスト申請1',
             'start_break' => ['12:10', '15:10'],
             'end_break' => ['13:10', '15:25'],
-            'approval'     => ApprovalStatus::APPROVED->value,
+            'approval' => ApprovalStatus::APPROVED->value,
         ]);
 
         $response = $this->actingAs($this->adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $this->application1->id]), $formData);

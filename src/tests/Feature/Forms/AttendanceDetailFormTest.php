@@ -2,17 +2,15 @@
 
 namespace Tests\Feature\Forms;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\Models\User;
+use App\Enums\ApprovalStatus;
+use App\Models\application;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
-use App\Models\application;
-use App\Http\Requests\ApplicationRequest;
-use App\Enums\ApprovalStatus;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AttendanceDetailFormTest extends TestCase
 {
@@ -50,11 +48,11 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '20:00',
+            'new_clock_in' => '20:00',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'notes' => 'テスト',
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this->actingAs($user)->post(route('attendance.storeApplication', ['id' => $attendance->id ?? null]), $formData);
@@ -95,13 +93,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['18:10'],
             'new_end_break' => ['17:00'],
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this->followingRedirects()
@@ -142,13 +140,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['16:10'],
             'new_end_break' => ['17:30'],
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this->followingRedirects()
@@ -189,13 +187,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => null,
+            'notes' => null,
             'new_start_break' => ['12:10'],
             'new_end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value, // 未承認
-            'applied_at'   => now(),
+            'approval' => ApprovalStatus::PENDING->value, // 未承認
+            'applied_at' => now(),
         ]);
 
         $response = $this
@@ -240,13 +238,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['12:10'],
             'new_end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-20 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-20 00:00:00',
         ]);
 
         $response = $this
@@ -311,7 +309,7 @@ class AttendanceDetailFormTest extends TestCase
             ],
             [
                 'id' => 2,
-            ]
+            ],
         ]);
         $attendances = Attendance::factory()->createMany([
             [
@@ -327,9 +325,8 @@ class AttendanceDetailFormTest extends TestCase
                 'clock_in' => $clockInDateTime2,
                 'clock_out' => $clockOutDateTime2,
                 'date' => '2025-10-02',
-            ]
+            ],
         ]);
-
 
         $attendances[0]->breakTimes()->create([
             'user_id' => $user->id,
@@ -351,13 +348,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[0]->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['12:10'],
             'new_end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-20 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-20 00:00:00',
         ]);
 
         $response = $this
@@ -368,19 +365,18 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[1]->user_id,
-            'new_clock_in'  => '09:20',
+            'new_clock_in' => '09:20',
             'new_clock_out' => '17:20',
-            'notes'        => 'テスト2',
+            'notes' => 'テスト2',
             'new_start_break' => ['12:20'],
             'new_end_break' => ['13:40'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-21 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-21 00:00:00',
         ]);
 
         $response = $this
             ->actingAs($user)
             ->post(route('attendance.storeApplication', ['id' => $attendances[1]->id]), $formData);
-
 
         $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'pending']));
 
@@ -422,7 +418,7 @@ class AttendanceDetailFormTest extends TestCase
             ],
             [
                 'id' => 2,
-            ]
+            ],
         ]);
         $attendances = Attendance::factory()->createMany([
             [
@@ -438,9 +434,8 @@ class AttendanceDetailFormTest extends TestCase
                 'clock_in' => $clockInDateTime2,
                 'clock_out' => $clockOutDateTime2,
                 'date' => '2025-10-02',
-            ]
+            ],
         ]);
-
 
         $attendances[0]->breakTimes()->create([
             'user_id' => $user->id,
@@ -462,13 +457,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[0]->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['12:10'],
             'new_end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-20 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-20 00:00:00',
         ]);
 
         $response = $this
@@ -479,13 +474,13 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[1]->user_id,
-            'new_clock_in'  => '09:20',
+            'new_clock_in' => '09:20',
             'new_clock_out' => '17:20',
-            'notes'        => 'テスト2',
+            'notes' => 'テスト2',
             'new_start_break' => ['12:20'],
             'new_end_break' => ['13:40'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-21 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-21 00:00:00',
         ]);
 
         $response = $this
@@ -503,12 +498,12 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[0]->user_id,
-            'clock_in'  => '09:10',
+            'clock_in' => '09:10',
             'clock_out' => '17:10',
-            'notes'        => 'テスト1',
+            'notes' => 'テスト1',
             'start_break' => ['12:10'],
             'end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::APPROVED->value,
+            'approval' => ApprovalStatus::APPROVED->value,
         ]);
 
         $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application->id]), $formData);
@@ -518,16 +513,15 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendances[1]->user_id,
-            'clock_in'  => '09:20',
+            'clock_in' => '09:20',
             'clock_out' => '17:20',
-            'notes'        => 'テスト2',
+            'notes' => 'テスト2',
             'start_break' => ['12:20'],
             'end_break' => ['13:40'],
-            'approval'     => ApprovalStatus::APPROVED->value,
+            'approval' => ApprovalStatus::APPROVED->value,
         ]);
 
         $response = $this->actingAs($adminUser)->post(route('admin.admin_storeApprove', ['attendance_correct_request_id' => $application2->id]), $formData);
-
 
         $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'approved']));
 
@@ -570,7 +564,6 @@ class AttendanceDetailFormTest extends TestCase
             'date' => '2025-10-01',
         ]);
 
-
         $attendance->breakTimes()->create([
             'user_id' => $user->id,
             'start_break' => $startBreakDateTime,
@@ -585,19 +578,18 @@ class AttendanceDetailFormTest extends TestCase
         $formData = ([
             '_token' => csrf_token(),
             'user_id' => $attendance->user_id,
-            'new_clock_in'  => '09:10',
+            'new_clock_in' => '09:10',
             'new_clock_out' => '17:10',
-            'notes'        => 'テスト',
+            'notes' => 'テスト',
             'new_start_break' => ['12:10'],
             'new_end_break' => ['13:30'],
-            'approval'     => ApprovalStatus::PENDING->value,
-            'applied_at'   => '2025-10-20 00:00:00',
+            'approval' => ApprovalStatus::PENDING->value,
+            'applied_at' => '2025-10-20 00:00:00',
         ]);
 
         $response = $this
             ->actingAs($user)
             ->post(route('attendance.storeApplication', ['id' => $attendance->id]), $formData);
-
 
         $response = $this->actingAs($user)->get(route('attendance.applicationList', ['tab' => 'pending']));
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
