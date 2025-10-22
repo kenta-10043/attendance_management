@@ -8,8 +8,8 @@
 init:
 	@echo "=== Docker コンテナをビルド＆起動 ==="
 	docker-compose up -d --build
-	@echo "=== Laravel 10 プロジェクト作成 ==="
-	docker-compose exec php composer create-project "laravel/laravel=10.*" . --prefer-dist
+	@echo "=== 依存パッケージをインストール ==="
+	docker-compose exec php composer install
 	@echo "=== .env 設定（必要なら自分で編集してください）とアプリキー生成 ==="
 	docker-compose exec php cp .env.example .env || true
 	docker-compose exec php php artisan key:generate
