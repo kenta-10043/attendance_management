@@ -40,11 +40,11 @@
                 <div class="attendance__item" id='clock'>
                     <label class="item__label" for="clock">出勤・退勤</label>
                     <input class="input__time-in" type="text" name="new_clock_in"
-                        value="{{ old('new_clock_in', optional($applicationClockIn ?? $attendanceClockIn)->format('H:i')) }}"
+                        value="{{ old('new_clock_in', $applicationClockIn ?? $attendanceClockIn) }}"
                         @if (in_array(optional($attendance->application)->approval, [1, 2])) readonly @endif>
                     <span>～</span>
                     <input class="input__time-out" type="text" name="new_clock_out"
-                        value="{{ old('new_clock_out', optional($applicationClockOut ?? $attendanceClockOut)->format('H:i')) }}"
+                        value="{{ old('new_clock_out', $applicationClockOut ?? $attendanceClockOut) }}"
                         @if (in_array(optional($attendance->application)->approval, [1, 2])) readonly @endif>
 
 

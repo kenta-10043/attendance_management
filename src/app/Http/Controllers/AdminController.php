@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Calendars\CalendarView;
 use App\Enums\ApprovalStatus;
+use App\Enums\AttendanceStatus;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Application;
 use App\Models\Attendance;
 use App\Models\User;
+use App\Models\Status;
 use App\Services\WorkTimeCalculator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,7 +45,7 @@ class AdminController extends Controller
                 $id = $data['id'];
             } else {
                 // 勤怠未登録の日付にも遷移用のダミーIDを生成
-                $id = 'new_'.$targetUser->id.'_'.$date;
+                $id = 'new_' . $targetUser->id . '_' . $date;
             }
 
             $userAttendances[] = (object) [
@@ -56,6 +58,7 @@ class AdminController extends Controller
                 'work' => $data['work'] ?? null,
                 'work_original' => $data['work_original'] ?? null,
                 'approval' => $data['approval'] ?? null,
+                'has_valid_break' => $data['has_valid_break'] ?? null,
             ];
         }
 
@@ -99,10 +102,10 @@ class AdminController extends Controller
 
             $attendanceStartBreaks = $attendance->breakTimes
                 ->pluck('start_break')
-                ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
             $attendanceEndBreaks = $attendance->breakTimes
                 ->pluck('end_break')
-                ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
 
             // 最新の申請（存在しなければ null）
             $application = $attendance->application()->latest()->first();
@@ -113,10 +116,10 @@ class AdminController extends Controller
 
                 $applicationStartBreaks = $application->breakTimes()
                     ->pluck('start_break')
-                    ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                    ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
                 $applicationEndBreaks = $application->breakTimes()
                     ->pluck('end_break')
-                    ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                    ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
             } else {
                 $applicationClockIn = null;
                 $applicationClockOut = null;
@@ -186,7 +189,7 @@ class AdminController extends Controller
         $callback = function () use ($user, $date, $monthly, $days) {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['スタッフ名', '対象月']);
-            fputcsv($file, [$user->name.'さん', $date->format('Y年m月')]);
+            fputcsv($file, [$user->name . 'さんの勤怠', $date->format('Y年m月')]);
             fputcsv($file, ['']);
 
             fputcsv($file, ['日付', '出勤', '退勤', '休憩', '合計']);
@@ -223,11 +226,14 @@ class AdminController extends Controller
 
         DB::transaction(function () use ($attendance, $validated, $userId, $date) {
 
+            $finishedStatus = Status::firstOrCreate(['status' => AttendanceStatus::FINISHED->value]);
+
             // 勤怠本体を作成 or 更新
             if ($attendance) {
                 $attendance->update([
                     'clock_in' => Carbon::parse("{$date} {$validated['clock_in']}")->format('Y-m-d H:i:s'),
                     'clock_out' => Carbon::parse("{$date} {$validated['clock_out']}")->format('Y-m-d H:i:s'),
+                    'status_id' => $finishedStatus->id,
                 ]);
             } else {
                 $attendance = Attendance::create([
@@ -235,6 +241,7 @@ class AdminController extends Controller
                     'date' => $date,
                     'clock_in' => Carbon::parse("{$date} {$validated['clock_in']}")->format('Y-m-d H:i:s'),
                     'clock_out' => Carbon::parse("{$date} {$validated['clock_out']}")->format('Y-m-d H:i:s'),
+                    'status_id' => $finishedStatus->id,
                 ]);
             }
 
@@ -279,17 +286,17 @@ class AdminController extends Controller
 
         // 当月の勤怠データを取得
         $pendingAttendances = Attendance::with('application', 'user')
-            ->whereHas('user', fn ($q) => $q->where('is_admin', 0))
+            ->whereHas('user', fn($q) => $q->where('is_admin', 0))
             ->whereMonth('date', $currentMonth->month)
             ->whereYear('date', $currentMonth->year)
-            ->whereHas('application', fn ($q) => $q->where('approval', 1))
+            ->whereHas('application', fn($q) => $q->where('approval', 1))
             ->get();
 
         $approvedAttendances = Attendance::with('application', 'user')
-            ->whereHas('user', fn ($q) => $q->where('is_admin', 0))
+            ->whereHas('user', fn($q) => $q->where('is_admin', 0))
             ->whereMonth('date', $currentMonth->month)
             ->whereYear('date', $currentMonth->year)
-            ->whereHas('application', fn ($q) => $q->where('approval', 2))
+            ->whereHas('application', fn($q) => $q->where('approval', 2))
             ->get();
 
         return view(
@@ -311,10 +318,10 @@ class AdminController extends Controller
 
         $attendanceStartBreaks = $attendance->breakTimes
             ->pluck('start_break')
-            ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+            ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
         $attendanceEndBreaks = $attendance->breakTimes
             ->pluck('end_break')
-            ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+            ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
 
         if ($application) {
             $applicationClockIn = $application->new_clock_in !== null ? Carbon::parse($application->new_clock_in) : null;
@@ -322,10 +329,10 @@ class AdminController extends Controller
 
             $applicationStartBreaks = $application->breakTimes()
                 ->pluck('start_break')
-                ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
             $applicationEndBreaks = $application->breakTimes()
                 ->pluck('end_break')
-                ->map(fn ($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
         } else {
             $applicationClockIn = null;
             $applicationClockOut = null;
@@ -354,20 +361,22 @@ class AdminController extends Controller
         // 対象の申請
         $application = Application::findOrFail($attendanceCorrectRequestId);
         $attendance = $application->attendance;
+        $finishedStatus =  Status::firstOrCreate(['status' => AttendanceStatus::FINISHED->value]);
 
         // 勤怠更新
         $attendance->update([
+            'status_id' => $finishedStatus->id,
             'clock_in' => Carbon::parse("{$attendance->date} {$request['clock_in']}")->format('Y-m-d H:i:s'),
             'clock_out' => Carbon::parse("{$attendance->date} {$request['clock_out']}")->format('Y-m-d H:i:s'),
         ]);
+
 
         // Application 更新
         $application->update([
             'user_id' => $attendance->user_id,
             'new_clock_in' => null,
             'new_clock_out' => null,
-            'approval' => ApprovalStatus::APPROVED->value,
-            // 'applied_at'   => $request->input('applied_at', now()),
+            'approval' => ApprovalStatus::APPROVED->value,  //承認済み
         ]);
 
         // 休憩時間登録

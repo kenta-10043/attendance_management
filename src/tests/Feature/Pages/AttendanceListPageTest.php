@@ -134,7 +134,7 @@ class AttendanceListPageTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
         $response->assertStatus(200);
-        $response->assertSee('<h2 class="attendance__tittle">勤怠詳細</h2>', false);
+        $response->assertSee('<h2 class="attendance__title">勤怠詳細</h2>', false);
         $response->assertSee('2025年');
         $response->assertSee('10月1日');
     }

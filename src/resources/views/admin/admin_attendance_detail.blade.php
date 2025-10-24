@@ -42,7 +42,7 @@
                 <div class="attendance__item" id='clock'>
                     <label class="item__label" for="clock">出勤・退勤</label>
                     <input class="input__time-in" type="text" name="clock_in"
-                        value="{{ old('new_clock_in') ??
+                        value="{{ old('clock_in') ??
                             ($applicationClockIn
                                 ? $applicationClockIn->format('H:i')
                                 : ($attendanceClockIn
@@ -53,7 +53,7 @@
                     <span>～</span>
 
                     <input class="input__time-out" type="text" name="clock_out"
-                        value="{{ old('new_clock_out') ??
+                        value="{{ old('clock_out') ??
                             ($applicationClockOut
                                 ? $applicationClockOut->format('H:i')
                                 : ($attendanceClockOut
@@ -89,11 +89,11 @@
                         <div class="attendance__item">
                             <label class="item__label">休憩{{ $loop->iteration }}</label>
                             <input class="input__time-start" type="text" name="start_break[]"
-                                value="{{ old('new_start_break.' . $loop->index, optional($startBreak)->format('H:i')) }}"
+                                value="{{ old('start_break.' . $loop->index, optional($startBreak)->format('H:i')) }}"
                                 @if (in_array(optional($attendance->application)->approval, [1, 2])) readonly @endif>
                             <span>～</span>
                             <input class="input__time-end" type="text" name="end_break[]"
-                                value="{{ old('new_end_break.' . $loop->index, optional($endBreak)->format('H:i')) }}"
+                                value="{{ old('end_break.' . $loop->index, optional($endBreak)->format('H:i')) }}"
                                 @if (in_array(optional($attendance->application)->approval, [1, 2])) readonly @endif>
                         </div>
 
@@ -114,10 +114,10 @@
                         <div class="attendance__item">
                             <label class="item__label">休憩{{ $breakStart->count() + 1 }}</label>
                             <input class="input__time-start" type="text" name="start_break[]"
-                                value="{{ old('new_start_break.' . $breakStart->count()) }}">
+                                value="{{ old('start_break.' . $breakStart->count()) }}">
                             <span>～</span>
                             <input class="input__time-end" type="text" name="end_break[]"
-                                value="{{ old('new_end_break.' . $breakStart->count()) }}">
+                                value="{{ old('end_break.' . $breakStart->count()) }}">
 
                         </div>
 

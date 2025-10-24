@@ -202,8 +202,8 @@ class AdminStaffAttendanceListTest extends TestCase
             '10/01(水)',
             '9:00',
             '18:00',
-            '01:15',
-            '07:45',
+            '1:15',
+            '7:45',
             '詳細',
         ], [
             '10/02(木)',
@@ -216,8 +216,8 @@ class AdminStaffAttendanceListTest extends TestCase
             '10/03(金)',
             '11:00',
             '20:00',
-            '01:15',
-            '07:45',
+            '1:15',
+            '7:45',
             '詳細',
         ]);
 
@@ -239,8 +239,8 @@ class AdminStaffAttendanceListTest extends TestCase
             '09/01(月)',
             '9:00',
             '18:00',
-            '01:15',
-            '07:45',
+            '1:15',
+            '7:45',
             '詳細',
         ]);
 
@@ -262,8 +262,8 @@ class AdminStaffAttendanceListTest extends TestCase
             '11/01(土)',
             '9:00',
             '18:00',
-            '01:15',
-            '07:45',
+            '1:15',
+            '7:45',
             '詳細',
         ]);
 

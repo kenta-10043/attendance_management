@@ -37,6 +37,7 @@
                 <tr>
 
                     <td class="attendance__item__data">{{ $userAttendance->user_name }}</td>
+
                     <td class="attendance__item__data">
                         {{ $userAttendance->clock_in ?? '' }}
                     </td>
@@ -44,19 +45,33 @@
                         {{ $userAttendance->clock_out ?? '' }}
                     </td>
                     <td class="attendance__item__data">
-                        @if (!empty($userAttendance->break_original) && $userAttendance->break_original !== '00:00')
-                            {{ $userAttendance->break_original }}
+
+                        @if (!empty($userAttendance->has_valid_break))
+                            @if (!empty($userAttendance->break_original) && $userAttendance->break_original !== '00:00')
+                                {{ $userAttendance->break_original }}
+                            @else
+                                {{ $userAttendance->break ?? '' }}
+                            @endif
                         @else
-                            {{ $userAttendance->break ?? '' }}
+                            {{ '' }}
                         @endif
                     </td>
                     <td class="attendance__item__data">
-                        @if (!empty($userAttendance) && ($userAttendance->approval ?? null) === 2)
-                            {{ $userAttendance->work ?? '' }}
-                        @elseif (!empty($userAttendance) && !empty($userAttendance->work_original) && $userAttendance->work_original !== '00:00')
-                            {{ $userAttendance->work_original }}
+                        @php
+                            $clockIn = $userAttendance->clock_in ?? null;
+                            $clockOut = $userAttendance->clock_out ?? null;
+                        @endphp
+
+                        @if (!empty($clockIn) && !empty($clockOut))
+                            @if (!empty($userAttendance) && ($userAttendance->approval ?? null) === 2)
+                                {{ $userAttendance->work ?? '' }}
+                            @elseif (!empty($userAttendance) && !empty($userAttendance->work_original) && $userAttendance->work_original !== '00:00')
+                                {{ $userAttendance->work_original }}
+                            @else
+                                {{ $userAttendance->work ?? '' }}
+                            @endif
                         @else
-                            {{ $userAttendance->work ?? '' }}
+                            {{ '' }}
                         @endif
                     </td>
                     <td class="attendance__item__data">

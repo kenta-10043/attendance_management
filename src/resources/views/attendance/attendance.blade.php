@@ -73,7 +73,6 @@
 
     <script>
         (function() {
-            // サーバー時刻とクライアント時刻の差（ミリ秒）
             const serverTime = new Date("{{ $today->toDateTimeString() }}");
             const clientTime = new Date();
             const timeDiff = serverTime.getTime() - clientTime.getTime();
@@ -85,16 +84,14 @@
                 document.getElementById('current-time').textContent = `${hours}:${minutes}`;
             }
 
-            // 初回更新（Bladeで初期値表示済み）
             updateTime();
 
-            // 次の分の頭まで待機してから1分ごとに更新
             const nowClient = new Date(new Date().getTime() + timeDiff);
             const delay = (60 - nowClient.getSeconds()) * 1000;
 
             setTimeout(() => {
                 updateTime();
-                setInterval(updateTime, 60000); // 毎分更新
+                setInterval(updateTime, 60000);
             }, delay);
         })();
     </script>

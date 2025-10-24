@@ -31,7 +31,7 @@ class AttendanceDetailPageTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
         $response->assertStatus(200);
-        $response->assertSee('<h2 class="attendance__tittle">勤怠詳細</h2>', false);
+        $response->assertSee('<h2 class="attendance__title">勤怠詳細</h2>', false);
         $response->assertSee('2025年');
         $response->assertSee('10月1日');
     }
@@ -56,7 +56,7 @@ class AttendanceDetailPageTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
         $response->assertStatus(200);
-        $response->assertSee('<h2 class="attendance__tittle">勤怠詳細</h2>', false);
+        $response->assertSee('<h2 class="attendance__title">勤怠詳細</h2>', false);
         $response->assertSee('テストユーザー');
     }
 
@@ -80,7 +80,7 @@ class AttendanceDetailPageTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
         $response->assertStatus(200);
-        $response->assertSee('<h2 class="attendance__tittle">勤怠詳細</h2>', false);
+        $response->assertSee('<h2 class="attendance__title">勤怠詳細</h2>', false);
         $response->assertSee('2025年');
         $response->assertSee('10月1日');
         $response->assertSee('09:00');
@@ -116,7 +116,7 @@ class AttendanceDetailPageTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('attendance.detail', ['id' => $attendance->id]));
         $response->assertStatus(200);
-        $response->assertSee('<h2 class="attendance__tittle">勤怠詳細</h2>', false);
+        $response->assertSee('<h2 class="attendance__title">勤怠詳細</h2>', false);
         $response->assertSee('2025年');
         $response->assertSee('10月1日');
         $response->assertSee('12:00');

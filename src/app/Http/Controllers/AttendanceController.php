@@ -6,6 +6,7 @@ use App\Calendars\CalendarView;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Status;
+use App\Enums\AttendanceStatus;
 use App\Services\WorkTimeCalculator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class AttendanceController extends Controller
         $type = $request->input('type');
         if ($type === 'start' && ! $attendance) {
 
-            $status = Status::firstOrCreate(['status' => 1]);  // 1 = 出勤中
+            $status = Status::firstOrCreate(['status' => AttendanceStatus::WORKING->value]);  // 1 = 出勤中
 
             $attendance = Attendance::create([
                 'user_id' => $user->id,
@@ -72,7 +73,7 @@ class AttendanceController extends Controller
                 'start_break' => $request->input('start_break', now()->toDateTimeString()),
             ]);
 
-            $status = Status::firstOrCreate(['status' => 2]);  // 2 = 休憩中
+            $status = Status::firstOrCreate(['status' => AttendanceStatus::BREAK->value]);  // 2 = 休憩中
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
 
@@ -87,7 +88,7 @@ class AttendanceController extends Controller
             if ($breakTime) {
                 $breakTime->update(['end_break' => $request->input('end_break', now()->toDateTimeString())]);
             }
-            $status = Status::firstOrCreate(['status' => 1]);
+            $status = Status::firstOrCreate(['status' => AttendanceStatus::WORKING->value]);
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
 
@@ -99,7 +100,7 @@ class AttendanceController extends Controller
                 'clock_out' => $request->input('clock_out', now()->toDateTimeString()),
             ]);
 
-            $status = Status::firstOrCreate(['status' => 3]); // 3 = 退勤済
+            $status = Status::firstOrCreate(['status' => AttendanceStatus::FINISHED->value]); // 3 = 退勤済
             $attendance->update(['status_id' => $status->id]);
             $attendance->refresh();
 
@@ -137,29 +138,30 @@ class AttendanceController extends Controller
 
     public function detail($id)
     {
-        $attendance = Attendance::findOrFail($id);
+        $attendance = Attendance::findOrFail($id)->refresh();
         $userName = $attendance->user->name;
         $attendanceDate = Carbon::parse($attendance->date);
 
-        $attendanceClockIn = Carbon::parse($attendance->clock_in);
-        $attendanceClockOut = Carbon::parse($attendance->clock_out);
-        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
-        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
+        $attendanceClockIn = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i')  : null;
+        $attendanceClockOut = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : null;
+        $attendanceStartBreaks = $attendance->breakTimes->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+        $attendanceEndBreaks = $attendance->breakTimes->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
 
         $application = $attendance->application()->latest()->first();
 
         if ($application) {
-            $applicationClockIn = Carbon::parse($application->new_clock_in);
-            $applicationClockOut = Carbon::parse($application->new_clock_out);
+            $applicationClockIn = $application->new_clock_in ? Carbon::parse($application->new_clock_in)->format('H:i') : null;
+            $applicationClockOut = $application->new_clock_out ? Carbon::parse($application->new_clock_out)->format('H:i') : null;
 
-            $applicationStartBreaks = $application->breakTimes()->pluck('start_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
-            $applicationEndBreaks = $application->breakTimes()->pluck('end_break')->map(fn ($t) => $t ? Carbon::parse($t) : null);
+            $applicationStartBreaks = $application->breakTimes()->pluck('start_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
+            $applicationEndBreaks = $application->breakTimes()->pluck('end_break')->map(fn($t) => $t ? Carbon::parse($t) : null);
         } else {
             $applicationClockIn = null;
             $applicationClockOut = null;
             $applicationStartBreaks = collect();
             $applicationEndBreaks = collect();
         }
+
 
         return view('attendance.attendance_detail', compact(
             'attendance',

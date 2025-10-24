@@ -37,23 +37,34 @@
                     @php
                         $attendanceTime = $monthly[$index] ?? null;
                         $attendanceId = $attendanceTime['id'] ?? 0;
+                        $clockIn = $attendanceTime['clock_in'] ?? null;
+                        $clockOut = $attendanceTime['clock_out'] ?? null;
                     @endphp
-                    <td class="attendance__item__data">{{ $attendanceTime['clock_in'] ?? '' }}</td>
-                    <td class="attendance__item__data">{{ $attendanceTime['clock_out'] ?? '' }}</td>
+
+                    <td class="attendance__item__data">{{ $clockIn ?? '' }}</td>
+                    <td class="attendance__item__data">{{ $clockOut ?? '' }}</td>
                     <td class="attendance__item__data">
-                        @if (!empty($attendanceTime['break_original']) && $attendanceTime['break_original'] !== '00:00')
-                            {{ $attendanceTime['break_original'] }}
+                        @if (!empty($attendanceTime['has_valid_break']))
+                            @if (!empty($attendanceTime['break_original']) && $attendanceTime['break_original'] !== '00:00')
+                                {{ $attendanceTime['break_original'] }}
+                            @else
+                                {{ $attendanceTime['break'] ?? '' }}
+                            @endif
                         @else
-                            {{ $attendanceTime['break'] ?? '' }}
+                            {{ '' }}
                         @endif
                     </td>
                     <td class="attendance__item__data">
-                        @if (!empty($attendanceTime) && ($attendanceTime['approval'] ?? null) === 2)
-                            {{ $attendanceTime['work'] ?? '' }}
-                        @elseif (!empty($attendanceTime) && !empty($attendanceTime['work_original']) && $attendanceTime['work_original'] !== '00:00')
-                            {{ $attendanceTime['work_original'] }}
+                        @if (!empty($clockIn) && !empty($clockOut))
+                            @if (!empty($attendanceTime) && ($attendanceTime['approval'] ?? null) === 2)
+                                {{ $attendanceTime['work'] ?? '' }}
+                            @elseif (!empty($attendanceTime) && !empty($attendanceTime['work_original']) && $attendanceTime['work_original'] !== '00:00')
+                                {{ $attendanceTime['work_original'] }}
+                            @else
+                                {{ $attendanceTime['work'] ?? '' }}
+                            @endif
                         @else
-                            {{ $attendanceTime['work'] ?? '' }}
+                            {{ '' }}
                         @endif
                     </td>
 

@@ -33,7 +33,7 @@
 
                     <td class="attendance__item__data">
                         <form action="{{ route('admin.admin_attendance_index', ['id' => $user->id]) }}" method="GET">
-                            <button class="button__detail" type="submit">月次勤怠</button>
+                            <button class="button__detail" type="submit">詳細</button>
                         </form>
                     </td>
                 </tr>
