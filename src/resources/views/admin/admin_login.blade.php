@@ -8,11 +8,11 @@
 
 @section('content')
     <div class="main__content">
-        <form class="login__form" action="{{ route('login') }}" method="POST" novalidate>
+        <form action="{{ route('login') }}" method="POST" novalidate>
             @csrf
             <h1 class="login-form__title">管理者ログイン</h1>
 
-            <div class="login__items">
+            <div>
                 <div class="login__inner">
                     <label class="item-label" for="email">メールアドレス</label>
                     <input class="input__form" name="email" id="email" type="email" value="{{ old('email') }}"

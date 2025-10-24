@@ -13,12 +13,12 @@
     @endif
 
     <div class="main__content">
-        <form class="register__form" action="/register" method="POST" novalidate>
+        <form action="/register" method="POST" novalidate>
             @csrf
 
             <h1 class="register-form__title">会員登録</h1>
 
-            <div class="register__items">
+            <div>
                 <div class="register__inner">
                     <label class="item-label" for="name">名前</label>
                     <input class="input__form" name="name" id="name" type="text" value="{{ old('name') }}"
