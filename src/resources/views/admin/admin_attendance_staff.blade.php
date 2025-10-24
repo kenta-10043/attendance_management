@@ -83,7 +83,7 @@
 
         <div class="button__area">
             <a class="csv__button"
-                href="{{ route('admin.admin_attendance_index', ['id' => $user->id, 'download' => 1]) }}">CSV出力</a>
+                href="{{ route('admin.admin_attendance_index', ['id' => $user->id, 'date' => $currentMonth->format('Y-m-d'), 'download' => 1]) }}">CSV出力</a>
         </div>
     </div>
 

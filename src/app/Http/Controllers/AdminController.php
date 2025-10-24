@@ -195,15 +195,37 @@ class AdminController extends Controller
             fputcsv($file, ['日付', '出勤', '退勤', '休憩', '合計']);
 
             foreach ($monthly as $i => $data) {
-                $date = $days[$i]->isoFormat('MM月DD日 (ddd)');
+                $dateLabel = $days[$i]->isoFormat('MM月DD日 (ddd)');
+
+                // $data が null の場合は休みとする
+                if (!$data) {
+                    fputcsv($file, [
+                        $dateLabel,
+                        '',
+                        '',
+                        '',
+                        '',
+                    ]);
+                    continue;
+                }
+
+                // ブレードと同じロジック
+                $break = $data['break'] ?? '';            // 承認後なら break
+                $work  = $data['work'] ?? '';             // 承認後なら work
+                if ($data['break_original'] !== null) {   // 承認前がある場合は original を使用
+                    $break = $data['break_original'];
+                    $work  = $data['work_original'];
+                }
+
                 fputcsv($file, [
-                    $date,
+                    $dateLabel,
                     $data['clock_in'] ?? '',
                     $data['clock_out'] ?? '',
-                    $data['break_original'] ?? '',
-                    $data['work'] ?? '',
+                    $break,
+                    $work,
                 ]);
             }
+
             fclose($file);
         };
 

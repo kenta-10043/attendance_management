@@ -70,13 +70,16 @@ php artisan db:seed
 cp .env .env.testing
 ```
 
-| 設定項目      | 変更前       | 変更後     |
-| ------------- | ------------ | ---------- |
-| APP_ENV       | local        | test       |
-| DB_CONNECTION | mysql        | mysql_test |
-| DB_DATABASE   | laravel_db   | demo_test  |
-| DB_USERNAME   | laravel_user | root       |
-| DB_PASSWORD   | laravel_user | root       |
+| 設定項目       | 変更前       | 変更後     |
+| -------------- | ------------ | ---------- |
+| APP_ENV        | local        | testing    |
+| DB_CONNECTION  | mysql        | mysql_test |
+| DB_DATABASE    | laravel_db   | demo_test  |
+| DB_USERNAME    | laravel_user | root       |
+| DB_PASSWORD    | laravel_user | root       |
+| CACHE_DRIVER   | file         | array      |
+| SESSION_DRIVER | file         | array      |
+| MAIL_MAILER    | smtp         | log        |
 
 ### テスト実行手順
 
@@ -110,7 +113,7 @@ docker-compose up -d
 - テスト実行
 
 ```bash
-php artisan test
+php artisan test --env=testing
 ```
 
 ## 使用技術
