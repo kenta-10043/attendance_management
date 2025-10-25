@@ -20,6 +20,8 @@ use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract
 use Laravel\Fortify\Contracts\VerifyEmailViewResponse as VerifyEmailViewResponseContract;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -47,6 +49,25 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::ignoreRoutes();
+
+        Fortify::loginView(fn() => view('auth.login'));
+        Fortify::registerView(fn() => view('auth.register'));
+
+        Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
+            Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+                ->middleware('web')
+                ->name('login');
+
+            Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+                ->middleware('web')
+                ->name('login.post');
+
+            Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+                ->middleware('web')
+                ->name('logout');
+        });
+
         Fortify::createUsersUsing(CreateNewUser::class);
 
         Fortify::registerView(
@@ -62,7 +83,7 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
 
-            return Limit::perMinute(10)->by($email.$request->ip());
+            return Limit::perMinute(10)->by($email . $request->ip());
         });
     }
 }

@@ -42,7 +42,7 @@ Route::middleware(['auth', 'admin'])
         Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [AdminController::class, 'storeAdminApprove'])->name('admin_storeApprove');
     });
 
-Route::GET('/admin/login', [AdminController::class, 'showLoginForm'])->middleware('guest');
+Route::GET('/admin/login', [AdminController::class, 'showLoginForm']);
 
 Route::middleware(['auth', 'handle.application.list'])
     ->get('/stamp_correction_request/list', [ApplicationController::class, 'applicationList'])
