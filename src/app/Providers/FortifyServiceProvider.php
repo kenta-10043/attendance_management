@@ -49,10 +49,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Fortify::ignoreRoutes();
-
         Fortify::loginView(fn() => view('auth.login'));
         Fortify::registerView(fn() => view('auth.register'));
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify');
+        });
 
         Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
             Route::get('/login', [AuthenticatedSessionController::class, 'create'])
