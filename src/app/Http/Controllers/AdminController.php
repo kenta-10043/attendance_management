@@ -340,10 +340,10 @@ class AdminController extends Controller
 
         $attendanceStartBreaks = $attendance->breakTimes
             ->pluck('start_break')
-            ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
+            ->map(fn($time) => $time !== null ? Carbon::parse($time) : null);
         $attendanceEndBreaks = $attendance->breakTimes
             ->pluck('end_break')
-            ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
+            ->map(fn($time) => $time !== null ? Carbon::parse($time) : null);
 
         if ($application) {
             $applicationClockIn = $application->new_clock_in !== null ? Carbon::parse($application->new_clock_in) : null;
@@ -351,10 +351,10 @@ class AdminController extends Controller
 
             $applicationStartBreaks = $application->breakTimes()
                 ->pluck('start_break')
-                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($time) => $time !== null ? Carbon::parse($time) : null);
             $applicationEndBreaks = $application->breakTimes()
                 ->pluck('end_break')
-                ->map(fn($t) => $t !== null ? Carbon::parse($t) : null);
+                ->map(fn($time) => $time !== null ? Carbon::parse($time) : null);
         } else {
             $applicationClockIn = null;
             $applicationClockOut = null;

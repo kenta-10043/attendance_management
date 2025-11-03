@@ -70,19 +70,19 @@ class AttendanceListPageTest extends TestCase
     /** @test */
     public function attendance_list_page_display_current_month(): void
     {
+        Carbon::setTestNow(Carbon::parse('2025-10-01 00:00:00'));
         $user = User::first();
-        $date = Carbon::parse('2025-10-01');
-
-        $calendar = new CalendarView($date);
 
         $response = $this->actingAs($user)->get('/attendance/list');
         $response->assertStatus(200);
         $response->assertSee('2025/10');
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function attendance_list_page_display_previous_month(): void
     {
+        Carbon::setTestNow(Carbon::parse('2025-10-01 00:00:00'));
         $user = User::first();
         $date = Carbon::parse('2025-10-01');
 
@@ -96,11 +96,13 @@ class AttendanceListPageTest extends TestCase
         $response = $this->actingAs($user)->get(route('attendance.list', ['date' => $prev->format('Y-m')]));
         $response->assertStatus(200);
         $response->assertSee('2025/09');
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function attendance_list_page_display_next_month(): void
     {
+        Carbon::setTestNow(Carbon::parse('2025-10-01 00:00:00'));
         $user = User::first();
         $date = Carbon::parse('2025-10-01');
 
@@ -114,6 +116,7 @@ class AttendanceListPageTest extends TestCase
         $response = $this->actingAs($user)->get(route('attendance.list', ['date' => $next->format('Y-m')]));
         $response->assertStatus(200);
         $response->assertSee('2025/11');
+        Carbon::setTestNow();
     }
 
     /** @test */

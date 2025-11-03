@@ -12,6 +12,11 @@ class AdminLoginFormTest extends TestCase
 
     public function test_email_is_required_for_admin()
     {
+        $admin = User::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('correct_password'),
+            'is_admin' => 1,
+        ]);
         $response = $this->post('/login', [
             'email' => '',
             'password' => 'password123',
@@ -22,6 +27,11 @@ class AdminLoginFormTest extends TestCase
 
     public function test_password_is_required_for_admin()
     {
+        $admin = User::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('correct_password'),
+            'is_admin' => 1,
+        ]);
         $response = $this->post('/login', [
             'email' => 'admin@example.com',
             'password' => '',

@@ -207,6 +207,7 @@ class AttendanceDetailFormTest extends TestCase
     /** @test */
     public function attendance_detail_form_can_application(): void
     {
+        Carbon::setTestNow('2025-10-01');
         $clockInDateTime = '2025-10-01 09:00:00';
         $clockOutDateTime = '2025-10-01 17:00:00';
         $startBreakDateTime = '2025-10-01 12:00:00';
@@ -286,11 +287,13 @@ class AttendanceDetailFormTest extends TestCase
         $response->assertSee('13:30');
         $response->assertSee('テスト');
         $response->assertSee('<button class="button__approval" type="submit">承認</button>', false);
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function attendance_detail_form_display_application_list(): void
     {
+        Carbon::setTestNow('2025-10-01');
         $clockInDateTime = '2025-10-01 09:00:00';
         $clockInDateTime2 = '2025-10-02 09:00:00';
         $clockOutDateTime = '2025-10-01 17:00:00';
@@ -395,11 +398,13 @@ class AttendanceDetailFormTest extends TestCase
             '2025/10/21',
             '詳細',
         ]);
+        Carbon::setTestNow();
     }
 
     /** @test */
     public function attendance_detail_form_display_approval_list(): void
     {
+        Carbon::setTestNow('2025-10-01');
         $clockInDateTime = '2025-10-01 09:00:00';
         $clockInDateTime2 = '2025-10-02 09:00:00';
         $clockOutDateTime = '2025-10-01 17:00:00';
@@ -540,6 +545,7 @@ class AttendanceDetailFormTest extends TestCase
             '2025/10/21',
             '詳細',
         ]);
+        Carbon::setTestNow();
     }
 
     /** @test */
