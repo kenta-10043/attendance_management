@@ -58,4 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(BreakTime::class);
     }
+
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class);
+    }
 }

@@ -20,6 +20,9 @@ src/storage/logs/*
 src/.env
 src/.env.*
 !src/.env.example
+.env
+.env.*
+!.env.example
 
 # ==========================
 # Docker（MySQLなど機密データ）

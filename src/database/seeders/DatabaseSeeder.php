@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AttendanceSeeder::class,
         ]);
+        $this->call([
+            ShiftScheduleSeeder::class,
+        ]);
 
         User::factory()->admin()->create([
             'name' => '管理者ユーザー',
