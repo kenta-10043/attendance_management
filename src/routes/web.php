@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,13 @@ Route::middleware(['auth.verified'])
         Route::get('/list', [AttendanceController::class, 'index'])->name('list');
         Route::get('/detail/{id}', [AttendanceController::class, 'detail'])->name('detail');
         Route::post('/detail/{id}', [ApplicationController::class, 'storeApplication'])->name('storeApplication');
+    });
+
+Route::middleware(['auth.verified'])
+    ->prefix('shift')
+    ->name('shift.')
+    ->group(function () {
+        Route::get('/', [ShiftController::class, 'index'])->name('index');
     });
 
 // 管理者

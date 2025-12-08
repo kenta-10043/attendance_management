@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Shift;
+use App\Models\User;
 use App\Models\Schedule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class ShiftScheduleSeeder extends Seeder
@@ -78,5 +81,52 @@ class ShiftScheduleSeeder extends Seeder
                 'schedule_break' => 0,
             ],
         ]);
+
+        //user作成×2
+        $users = [
+            [
+                'name' => 'フィニアス',
+                'email' => 'phineas@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'remember_token' => Str::random(10),
+                'is_admin' => false,
+            ],
+            [
+                'name' => 'ファーブ',
+                'email' => 'ferb@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'remember_token' => Str::random(10),
+                'is_admin' => false,
+            ],
+        ];
+
+        DB::table('users')->insert($users);
+
+        //この2人のデータを取得(最新順にして2人をゲット)
+        $createdUsers = User::orderBy('id', 'desc')->take(2)->get();
+
+        //当月の月初から月末までの日付を作成
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        $shiftIds = Shift::pluck('id')->toArray(); //[1,2,3,4,5,6]
+
+        //各ユーザー×各日付にランダムシフトを作成
+        foreach ($createdUsers as $user) {
+            $date = $start->copy();
+
+            while ($date->lte($end)) {
+                DB::table('shift_user')->insert([
+                    'user_id' => $user->id,
+                    'shift_id' => fake()->randomElement($shiftIds),
+                    'schedule_date' => $date->format('Y-m-d'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $date->addDay();
+            }
+        }
     }
 }

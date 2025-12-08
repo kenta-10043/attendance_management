@@ -1,0 +1,14 @@
+.shift__table{
+    border-collapse: collapse;
+}
+.shift__table-row{
+
+}
+.shift__table-header, .shift__table-data{
+    border: 1px solid #aaa;
+    padding: 5px 8px;
+    text-align: center;
+}
+
+
+

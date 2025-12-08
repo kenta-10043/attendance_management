@@ -15,7 +15,8 @@ class Shift extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'shift_user')
+            ->withPivot('schedule_date');
     }
 
     public function schedule()
